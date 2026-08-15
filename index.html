@@ -3,20 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#111417">
+<meta name="theme-color" content="#0F151E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
 <title>UX: от нуля до найма</title>
 <style>
 :root{
-  --bg:#111417;
-  --surface:#1a1f24;
-  --surface2:#22282e;
-  --border:#2b333b;
-  --text:#e7eaee;
-  --muted:#98a2ac;
-  --accent:#e3a24f;
-  --accent-dim:rgba(227,162,79,.08);
-  --accent-ink:#241703;
+  --bg:#0F151E;
+  --surface:#161E29;
+  --surface2:#1D2733;
+  --border:#2A3644;
+  --text:#EAF0F6;
+  --muted:#8FA0B0;
+  --accent:#FFD43D;
+  --accent-ink:#201900;
+  --accent-dim:rgba(255,212,61,.09);
+  --mark:rgba(255,212,61,.16);
+  --ring-track:#243040;
   color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -25,194 +27,309 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  font-size:17px;
-  line-height:1.55;
+  font-size:16px;line-height:1.5;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
 }
-.wrap{max-width:640px;margin:0 auto;padding:0 16px 56px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
 
-.page-head{padding:28px 0 16px}
-h1{font-size:27px;line-height:1.2;letter-spacing:-.3px}
-.subtitle{color:var(--muted);font-size:16px;margin-top:10px}
-
+/* ---------- top bar ---------- */
 .topbar{
-  position:sticky;top:0;z-index:10;
+  position:sticky;top:0;z-index:20;
   background:var(--bg);
-  padding:12px 0;
   border-bottom:1px solid var(--border);
 }
-.overall{display:flex;align-items:center;gap:12px}
-.overall-label{font-size:14px;color:var(--muted);flex:none}
-.bar{
-  display:block;flex:1;height:8px;
-  background:var(--surface2);
-  border-radius:99px;overflow:hidden;
+.topbar-in{
+  max-width:560px;margin:0 auto;padding:10px 16px;
+  display:flex;align-items:center;gap:12px;
 }
-.fill{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
-.overall .pct{
-  flex:none;min-width:46px;text-align:right;
-  font-size:15px;font-weight:700;color:var(--accent);
-  font-variant-numeric:tabular-nums;
+.brand{font-size:14px;font-weight:700;letter-spacing:.02em}
+.topbar-spacer{flex:1}
+.streak-pill{
+  display:flex;align-items:center;gap:5px;
+  font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--muted);
 }
+.streak-pill.on{color:var(--accent)}
+.topring{display:flex;align-items:center;gap:7px}
+.topring .pct{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 
-.filters{display:flex;gap:8px;margin:16px 0 20px}
-.filter-btn{
-  flex:1;min-height:44px;padding:8px 4px;
-  font:inherit;font-size:15px;cursor:pointer;
-  background:var(--surface);color:var(--text);
-  border:1px solid var(--border);border-radius:10px;
-}
-.filter-btn[aria-pressed="true"]{
-  background:var(--accent);border-color:var(--accent);
-  color:var(--accent-ink);font-weight:700;
-}
+/* ---------- rings ---------- */
+.ring{display:block}
+.ring .track{stroke:var(--ring-track);fill:none}
+.ring .val{stroke:var(--accent);fill:none;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .35s ease}
 
-.stage{
+/* ---------- view: Сейчас ---------- */
+.view{padding-top:20px}
+.eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+}
+.focus-lede{margin:2px 0 14px;font-size:13.5px;color:var(--muted)}
+.focus-card{
+  position:relative;
   background:var(--surface);
   border:1px solid var(--border);
-  border-radius:14px;
-  margin-bottom:14px;
-  overflow:hidden;
+  border-left:4px solid var(--accent);
+  border-radius:16px;
+  padding:18px 16px 16px;
 }
-.stage-head{
-  display:block;width:100%;min-height:44px;
-  padding:16px;
-  font:inherit;text-align:left;cursor:pointer;
-  background:none;border:0;color:inherit;
+.focus-card.is-done{border-left-color:var(--border)}
+.focus-stage{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.focus-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{
+  display:inline-flex;align-items:center;
+  font-size:12.5px;font-weight:700;line-height:1;
+  padding:6px 10px;border-radius:99px;
+  background:var(--surface2);color:var(--muted);
 }
-.stage-title-row{display:flex;gap:10px;align-items:baseline}
-.chev{flex:none;width:1em;color:var(--muted);font-size:13px}
-.stage-title{font-size:17px;font-weight:650;line-height:1.35}
-.stage-progress{
-  display:flex;align-items:center;gap:10px;
-  margin-top:10px;padding-left:calc(1em + 10px);
+.chip.gate{background:var(--accent);color:var(--accent-ink)}
+.focus-title{
+  margin-top:12px;
+  font-size:22px;line-height:1.25;font-weight:800;letter-spacing:-.01em;
 }
-.stage-progress .pct{
-  flex:none;min-width:40px;text-align:right;
-  font-size:13px;color:var(--muted);
-  font-variant-numeric:tabular-nums;
-}
-.stage.done .stage-progress .pct{color:var(--accent);font-weight:700}
+.gate-note{margin-top:6px;font-size:13px;color:var(--muted)}
+.inline-link{color:var(--accent);text-underline-offset:3px}
 
-.stage[data-collapsed="true"] .stage-body{display:none}
-.stage-body{border-top:1px solid var(--border);padding:6px 16px 16px}
-
-.tasks{list-style:none}
-.task{padding:6px 0;border-bottom:1px solid var(--border)}
-.task:last-child{border-bottom:0}
-
-.task-label{
-  display:flex;gap:12px;align-items:flex-start;
-  min-height:44px;padding:6px 0;cursor:pointer;
+.steps{list-style:none;margin-top:16px}
+.step{border-top:1px solid var(--border)}
+.step-btn{
+  display:flex;align-items:flex-start;gap:12px;
+  width:100%;min-height:52px;padding:12px 6px;
+  text-align:left;border-radius:8px;
 }
-.task-label input{
-  appearance:none;-webkit-appearance:none;
-  flex:none;width:26px;height:26px;margin-top:2px;
+.step-check{
+  flex:none;width:26px;height:26px;margin-top:1px;
+  border:2px solid #5A6B7D;border-radius:50%;
   display:inline-grid;place-content:center;
-  background:transparent;
-  border:2px solid #57626d;border-radius:8px;
-  cursor:pointer;
 }
-.task-label input::after{
-  content:"";width:12px;height:7px;
+.step-check::after{
+  content:"";width:11px;height:6px;
   border-left:2.5px solid var(--accent-ink);
   border-bottom:2.5px solid var(--accent-ink);
   transform:rotate(-45deg) translateY(-1px);
   opacity:0;
 }
-.task-label input:checked{background:var(--accent);border-color:var(--accent)}
-.task-label input:checked::after{opacity:1}
-.task-label input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.task-text{font-size:16px;padding-top:2px}
-.task.done .task-text{
-  color:var(--muted);
-  text-decoration:line-through;
-  text-decoration-thickness:1px;
+.step.done .step-check{background:var(--accent);border-color:var(--accent)}
+.step.done .step-check::after{opacity:1}
+.step-text{font-size:16px;padding-top:1px}
+.step.done .step-text{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+.step.now .step-text{
+  background:var(--mark);
+  border-radius:6px;
+  padding:1px 6px;margin:0 -6px;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+@media (prefers-reduced-motion: no-preference){
+  .step-check{transition:background .12s ease,border-color .12s ease}
+  .step.done .step-check{animation:pop .16s ease}
+  @keyframes pop{50%{transform:scale(1.18)}}
 }
 
-.task-links{
-  display:flex;flex-wrap:wrap;gap:8px;
-  margin:2px 0 8px 38px;
-}
+.task-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .link-chip{
   display:inline-flex;align-items:center;
   min-height:44px;padding:8px 16px;
   background:var(--surface2);
   border:1px solid var(--border);border-radius:99px;
-  color:var(--accent);text-decoration:none;font-size:14px;
+  color:var(--accent);text-decoration:none;font-size:14px;font-weight:600;
+}
+.focus-actions{display:flex;justify-content:flex-end;align-items:center;min-height:44px;margin-top:14px}
+.done-note{font-size:14px;font-weight:700;color:var(--accent)}
+.ghost-btn{
+  min-height:44px;padding:10px 14px;border-radius:10px;
+  font-size:14px;font-weight:600;color:var(--muted);
+}
+.ghost-btn:active{background:var(--surface2)}
+.all-done{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:32px 20px;text-align:center;
+}
+.all-done .big{font-size:40px}
+.all-done h2{font-size:22px;font-weight:800;margin-top:10px}
+.all-done p{color:var(--muted);margin-top:8px;font-size:15px}
+
+/* ---------- view: Карта ---------- */
+.map-head{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.map-head-text h1{font-size:24px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.map-sub{margin-top:6px;font-size:13.5px;color:var(--muted)}
+.filters{display:flex;gap:8px;margin:16px 0}
+.filter-btn{
+  flex:1;min-height:44px;padding:8px 4px;
+  font-size:14px;font-weight:600;
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);border-radius:10px;
+}
+.filter-btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.stage-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.stage-card.here{border-color:var(--accent)}
+.stage-head{
+  display:flex;align-items:center;gap:12px;
+  width:100%;min-height:64px;padding:14px 16px;text-align:left;
+}
+.stage-head-text{flex:1;min-width:0}
+.stage-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stage-eyebrow .here-tag{color:var(--accent)}
+.stage-name{font-size:16px;font-weight:700;line-height:1.3;margin-top:3px}
+.stage-count{font-size:12.5px;color:var(--muted);margin-top:3px;font-variant-numeric:tabular-nums}
+.stage-ring{flex:none;position:relative;width:44px;height:44px}
+.stage-ring .in{
+  position:absolute;inset:0;display:grid;place-content:center;
+  font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.stage-card.closed .stage-ring .in{color:var(--accent)}
+.stage-body{border-top:1px solid var(--border);padding:4px 8px 10px}
+.stage-card[data-open="false"] .stage-body{display:none}
+.trow{
+  display:flex;align-items:flex-start;gap:11px;
+  width:100%;min-height:52px;padding:11px 8px;
+  text-align:left;border-radius:10px;
+}
+.trow:active{background:var(--surface2)}
+.trow-dot{
+  flex:none;width:22px;height:22px;margin-top:1px;
+  border:2px solid #5A6B7D;border-radius:50%;
+  display:inline-grid;place-content:center;
+}
+.trow.done .trow-dot{background:var(--accent);border-color:var(--accent)}
+.trow.done .trow-dot::after{
+  content:"";width:9px;height:5px;
+  border-left:2px solid var(--accent-ink);
+  border-bottom:2px solid var(--accent-ink);
+  transform:rotate(-45deg) translateY(-1px);
+}
+.trow-text{font-size:14.5px;line-height:1.4}
+.trow.done .trow-text{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+.trow-gate{
+  display:inline-block;background:var(--accent);color:var(--accent-ink);
+  font-size:11px;font-weight:700;line-height:1;
+  padding:3px 7px;border-radius:5px;margin-right:6px;
+  transform:translateY(-1px);
 }
 
-.inline-link{color:var(--accent);text-underline-offset:3px}
-
-.task.gate{
-  border:1.5px solid var(--accent);
-  border-radius:12px;
-  background:var(--accent-dim);
-  padding:8px 12px;
-  margin:12px 0 4px;
+/* ---------- view: Я ---------- */
+.me-hero{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:20px 16px;text-align:center;
 }
-.gate-badge{
-  display:inline-block;
-  background:var(--accent);color:var(--accent-ink);
-  font-size:12.5px;font-weight:700;line-height:1;
-  padding:4px 8px;border-radius:6px;
-  margin-right:8px;
-  transform:translateY(-1.5px);
+.me-streak{font-size:44px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.me-streak-label{color:var(--muted);font-size:13.5px;margin-top:2px}
+.dots{display:flex;justify-content:center;gap:7px;margin-top:16px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--ring-track)}
+.dot.on{background:var(--accent)}
+.dots-label{margin-top:8px;font-size:12px;color:var(--muted)}
+.stats{display:flex;gap:10px;margin-top:12px}
+.stat{
+  flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:14px 8px;text-align:center;
 }
-.gate-note{margin:0 0 6px 38px;font-size:13.5px;color:var(--muted)}
-
-.reset-row{margin-top:32px;text-align:center}
+.stat .n{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12px;color:var(--muted);margin-top:3px}
+.reset-row{margin-top:24px;text-align:center}
 #resetBtn{
   min-height:48px;padding:12px 24px;
-  font:inherit;font-size:15px;cursor:pointer;
+  font-size:15px;
   background:var(--surface);color:var(--muted);
   border:1px solid var(--border);border-radius:10px;
 }
 
-body[data-filter="watch"] .task[data-mode="hands"],
-body[data-filter="hands"] .task[data-mode="watch"]{display:none}
+/* ---------- tab bar ---------- */
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar-in{max-width:560px;margin:0 auto;display:flex}
+.tab{
+  flex:1;min-height:60px;padding:8px 4px 6px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:11.5px;font-weight:600;color:var(--muted);
+}
+.tab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected="true"]{color:var(--accent)}
 
-@media (min-width:600px){
-  h1{font-size:32px}
-  .page-head{padding-top:40px}
+/* ---------- celebration ---------- */
+.celebrate{
+  position:fixed;inset:0;z-index:50;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px;
+}
+.celebrate[hidden]{display:none}
+.celebrate .big{font-size:56px}
+.celebrate h2{font-size:26px;font-weight:800;margin-top:14px;letter-spacing:-.01em}
+.celebrate p{color:var(--muted);margin-top:10px;font-size:15px;max-width:32ch}
+.celebrate .next{
+  margin-top:28px;min-height:52px;padding:14px 32px;
+  background:var(--accent);color:var(--accent-ink);
+  border-radius:12px;font-size:16px;font-weight:700;
+}
+@media (prefers-reduced-motion: no-preference){
+  .celebrate .big{animation:rise .5s ease}
+  @keyframes rise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
 }
 </style>
 </head>
-<body data-filter="all">
-<div class="wrap">
+<body>
 
-  <header class="page-head">
-    <h1>UX: от нуля до найма</h1>
-    <p class="subtitle">Цель — роль junior product/UX-дизайнера с сильным ресёрчем. Кейсы решают, не сертификаты. Этап закрывается только 🛠-гейтом.</p>
-  </header>
-
-  <div class="topbar">
-    <div class="overall">
-      <span class="overall-label">Общий прогресс</span>
-      <span class="bar" id="overallBar" role="progressbar" aria-label="Общий прогресс"
-            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="fill" id="overallFill"></span></span>
-      <span class="pct" id="overallPct">0%</span>
-    </div>
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand">UX: от нуля до найма</span>
+    <span class="topbar-spacer"></span>
+    <span class="streak-pill" id="streakPill">🔥 <span id="streakN">0</span></span>
+    <span class="topring">
+      <svg class="ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle class="track" cx="13" cy="13" r="10.5" stroke-width="4"></circle>
+        <circle class="val" id="topRingVal" cx="13" cy="13" r="10.5" stroke-width="4"></circle>
+      </svg>
+      <span class="pct" id="topRingPct">0%</span>
+    </span>
   </div>
+</header>
 
-  <div class="filters" role="group" aria-label="Фильтр задач">
-    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Все</button>
-    <button type="button" class="filter-btn" data-filter="watch" aria-pressed="false">🎥 Смотреть</button>
-    <button type="button" class="filter-btn" data-filter="hands" aria-pressed="false">🛠 Руками</button>
+<main class="wrap">
+  <section class="view" id="view-now" role="tabpanel" aria-label="Сейчас"></section>
+  <section class="view" id="view-map" role="tabpanel" aria-label="Карта" hidden></section>
+  <section class="view" id="view-me" role="tabpanel" aria-label="Я" hidden></section>
+</main>
+
+<nav class="tabbar" aria-label="Разделы">
+  <div class="tabbar-in" role="tablist">
+    <button class="tab" role="tab" data-tab="now" aria-selected="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5"></circle></svg>
+      Сейчас
+    </button>
+    <button class="tab" role="tab" data-tab="map" aria-selected="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"></path><path d="M9 4v14M15 6v14"></path></svg>
+      Карта
+    </button>
+    <button class="tab" role="tab" data-tab="me" aria-selected="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"></path></svg>
+      Я
+    </button>
   </div>
+</nav>
 
-  <main id="stages"></main>
-
-  <div class="reset-row">
-    <button type="button" id="resetBtn">Сбросить прогресс</button>
-  </div>
-
+<div class="celebrate" id="celebrate" role="dialog" aria-modal="true" aria-labelledby="celebrateTitle" hidden>
+  <div class="big">🎉</div>
+  <h2 id="celebrateTitle">Этап закрыт!</h2>
+  <p id="celebrateText"></p>
+  <button class="next" id="celebrateNext">Дальше</button>
 </div>
 
 <script>
 (function () {
   'use strict';
 
-  var STORE_KEY = 'uxRoadmap.progress.v2';
+  var STORE_KEY = 'uxRoadmap.app.v3';
   var W = 'watch', H = 'hands';
 
   var STAGES = [
@@ -220,303 +337,776 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
       title: 'Этап 0 — Проверка «моё / не моё» (2–4 дня)',
       tasks: [
         { m: W, t: 'Демо юзабилити-теста Стива Круга (~25 мин)',
-          links: ['https://www.youtube.com/results?search_query=steve+krug+usability+test+demo'] },
+          links: ['https://www.youtube.com/results?search_query=steve+krug+usability+test+demo'],
+          steps: [
+            'Открой ссылку и выбери запись демо-теста Круга на ~25 минут',
+            'Смотри и выписывай каждый вопрос, который задаёт модератор',
+            'Отметь один приём, который заберёшь себе'
+          ] },
         { m: W, t: 'Одна запись реальной сессии',
-          links: ['https://www.youtube.com/results?search_query=usability+testing+session+recording'] },
-        { m: W, t: 'Домашка: выписать все вопросы модератора + 3 находки «что мешало и почему»' },
-        { m: H, gate: true, t: '1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)' }
+          links: ['https://www.youtube.com/results?search_query=usability+testing+session+recording'],
+          steps: [
+            'Открой ссылку и включи любую запись реальной сессии',
+            'Замечай, где пользователь застревает и что говорит в этот момент',
+            'Выпиши 2–3 точные цитаты пользователя'
+          ] },
+        { m: W, t: 'Домашка: выписать все вопросы модератора + 3 находки «что мешало и почему»',
+          steps: [
+            'Собери в один список все вопросы модератора из двух видео',
+            'Сформулируй 3 находки: что мешало пользователю и почему',
+            'Перечитай список: убери оценки, оставь факты'
+          ] },
+        { m: H, gate: true, t: '1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)',
+          steps: [
+            'Выбери человека и сайт, придумай одну конкретную задачу',
+            'Договорись на 15 минут и приготовь запись или блокнот',
+            'Проведи тест: молчи, не помогай, записывай точные слова',
+            'Сразу после — зафиксируй 3 цитаты и 3 наблюдения'
+          ] }
       ]
     },
     {
       title: 'Этап 1 — База Figma (недели 1–2)',
       tasks: [
         { m: W, t: 'Официальный канал Figma, базовый плейлист для новичков',
-          links: ['https://www.youtube.com/@Figma'] },
+          links: ['https://www.youtube.com/@Figma'],
+          steps: [
+            'Открой канал и найди плейлист для новичков',
+            'Посмотри первые 2–3 урока, повторяя действия в Figma',
+            'Создай свой первый файл и сохрани его'
+          ] },
         { m: W, t: '«Figma for beginners»',
-          links: ['https://www.youtube.com/results?search_query=figma+for+beginners+tutorial'] },
-        { m: H, t: 'Скопировать экран №1 хорошего приложения один в один' },
-        { m: H, t: 'Скопировать экран №2 (другой тип: форма, список, карточки)' },
-        { m: H, t: 'Скопировать экран №3, собрав его на auto-layout и компонентах' },
-        { m: H, gate: true, t: '3 копии экранов готовы, третья — на auto-layout' }
+          links: ['https://www.youtube.com/results?search_query=figma+for+beginners+tutorial'],
+          steps: [
+            'Открой ссылку и выбери свежий туториал на 30–60 минут',
+            'Проходи его руками в Figma, не просто смотри'
+          ] },
+        { m: H, t: 'Скопировать экран №1 хорошего приложения один в один',
+          steps: [
+            'Сделай скриншот экрана приложения, которым пользуешься',
+            'Положи скриншот в Figma рядом с пустым фреймом',
+            'Повтори экран один в один: шрифты, отступы, цвета',
+            'Сравни со скриншотом и доведи отличия'
+          ] },
+        { m: H, t: 'Скопировать экран №2 (другой тип: форма, список, карточки)',
+          steps: [
+            'Выбери экран другого типа: форма, список или карточки',
+            'Скопируй его один в один в новом фрейме',
+            'Сравни с оригиналом и исправь расхождения'
+          ] },
+        { m: H, t: 'Скопировать экран №3, собрав его на auto-layout и компонентах',
+          steps: [
+            'Выбери третий экран и разбери его на повторяющиеся блоки',
+            'Собери каждый блок компонентом с auto-layout',
+            'Собери экран из компонентов и проверь: тянется ли он без поломок'
+          ] },
+        { m: H, gate: true, t: '3 копии экранов готовы, третья — на auto-layout',
+          steps: [
+            'Открой все три копии рядом с оригиналами',
+            'Проверь третью: каждый блок — компонент с auto-layout',
+            'Поправь то, что расползается, и закрывай гейт'
+          ] }
       ]
     },
     {
       title: 'Этап 2 — База дизайна и ресёрча (недели 2–4)',
       tasks: [
         { m: W, t: 'Принципы визуала: типографика, отступы, иерархия',
-          links: ['https://www.youtube.com/results?search_query=refactoring+ui+design+tips'] },
+          links: ['https://www.youtube.com/results?search_query=refactoring+ui+design+tips'],
+          steps: [
+            'Открой ссылку и выбери 1–2 видео с разборами',
+            'Выпиши 5 правил, которые понял: отступы, размеры, контраст',
+            'Открой свою копию экрана №3 и примени 2 правила из списка'
+          ] },
         { m: W, t: 'NNgroup: плейлисты usability testing и user interviews',
-          links: ['https://www.youtube.com/@NNgroup'] },
-        { m: W, t: 'Steve Krug «Don\'t Make Me Think» (конспект или аудио)' },
-        { m: H, t: 'Юзабилити-тест №2 (новый человек, новый сайт) + отчёт на 1 страницу' },
-        { m: H, t: 'Юзабилити-тест №3 + отчёт на 1 страницу' },
-        { m: H, gate: true, t: 'редизайн одного реального экрана в Figma + короткое обоснование каждого решения (почему так)' }
+          links: ['https://www.youtube.com/@NNgroup'],
+          steps: [
+            'Открой канал и найди плейлисты про usability testing и интервью',
+            'Смотри по одному видео в день, из каждого — 3 мысли в конспект'
+          ] },
+        { m: W, t: 'Steve Krug «Don\'t Make Me Think» (конспект или аудио)',
+          steps: [
+            'Найди конспект или аудиоверсию книги',
+            'Проходи по главе в день',
+            'Выпиши 5 идей, которые применишь в редизайне'
+          ] },
+        { m: H, t: 'Юзабилити-тест №2 (новый человек, новый сайт) + отчёт на 1 страницу',
+          steps: [
+            'Выбери нового человека, новый сайт и одну задачу',
+            'Проведи тест по правилам: молчать, записывать точные слова',
+            'Оформи отчёт на 1 страницу: цель, что делали, 3 находки, рекомендации'
+          ] },
+        { m: H, t: 'Юзабилити-тест №3 + отчёт на 1 страницу',
+          steps: [
+            'Проведи третий тест: новый человек или новый сценарий',
+            'Оформи отчёт на 1 страницу по той же структуре'
+          ] },
+        { m: H, gate: true, t: 'редизайн одного реального экрана в Figma + короткое обоснование каждого решения (почему так)',
+          steps: [
+            'Выбери реальный экран с проблемами — идеально из своих тестов',
+            'Сделай редизайн в Figma',
+            'К каждому изменению напиши одну строку: почему так',
+            'Покажи кому-нибудь и запиши реакцию'
+          ] }
       ]
     },
     {
       title: 'Этап 3 — Кейс №1: полный цикл (недели 4–8)',
       tasks: [
-        { m: H, t: 'Выбрать реальный мини-продукт (знакомый бизнес или локальный сервис)' },
-        { m: H, t: 'Исследование: 3–5 интервью/тестов с живыми людьми' },
-        { m: H, t: 'Прототип в Figma на основе находок' },
-        { m: H, t: 'Юзабилити-тест прототипа → итерация' },
+        { m: H, t: 'Выбрать реальный мини-продукт (знакомый бизнес или локальный сервис)',
+          steps: [
+            'Выпиши 3–5 знакомых бизнесов или сервисов',
+            'Выбери один: есть сайт и доступ к владельцу или клиентам',
+            'Сформулируй одну фразу: что хочу выяснить'
+          ] },
+        { m: H, t: 'Исследование: 3–5 интервью/тестов с живыми людьми',
+          steps: [
+            'Составь список вопросов или задач для теста',
+            'Найди 3–5 респондентов и договорись о времени',
+            'Проведи сессии, записывай точные слова',
+            'Сведи находки в 5–7 пунктов'
+          ] },
+        { m: H, t: 'Прототип в Figma на основе находок',
+          steps: [
+            'Выбери 2–3 главные проблемы из находок',
+            'Собери экраны, которые их решают',
+            'Свяжи экраны в кликабельный прототип'
+          ] },
+        { m: H, t: 'Юзабилити-тест прототипа → итерация',
+          steps: [
+            'Прогони прототип на 2–3 людях',
+            'Выпиши, где они спотыкаются',
+            'Внеси правки — это и есть итерация'
+          ] },
         { m: W, t: 'Как оформлять кейс',
-          links: ['https://www.youtube.com/results?search_query=ux+case+study+portfolio+breakdown'] },
-        { m: H, gate: true, t: 'кейс оформлен (Notion или Behance) и открыт по ссылке' }
+          links: ['https://www.youtube.com/results?search_query=ux+case+study+portfolio+breakdown'],
+          steps: [
+            'Посмотри 2–3 разбора кейсов по ссылке',
+            'Выпиши повторяющуюся структуру: проблема → процесс → решение → результат'
+          ] },
+        { m: H, gate: true, t: 'кейс оформлен (Notion или Behance) и открыт по ссылке',
+          steps: [
+            'Собери кейс: проблема → исследование → решение → результат',
+            'Добавь живые цитаты респондентов и «до/после»',
+            'Опубликуй и проверь ссылку в режиме инкогнито'
+          ] }
       ]
     },
     {
       title: 'Этап 4 — Кейс №2 и выход на рынок (недели 8–12)',
       tasks: [
-        { m: H, t: 'Кейс №2: редизайн существующего сервиса с обоснованием через исследование' },
-        { m: H, seg: ['Портфолио: Notion или ', { url: 'https://www.behance.net' }, ' — только реальные работы, без выдуманных клиентов'] },
-        { m: H, t: 'Резюме + LinkedIn под junior product/UX designer; заранее определить зарплатную вилку' },
-        { m: H, t: 'Отклики 10–15 в неделю: junior UX/UI, product designer, стажировки — Indeed, LinkedIn, hh.ru, career.habr.com' },
+        { m: H, t: 'Кейс №2: редизайн существующего сервиса с обоснованием через исследование',
+          steps: [
+            'Выбери сервис с очевидными проблемами',
+            'Проведи мини-исследование: 2–3 теста или интервью',
+            'Сделай редизайн и обоснуй каждое решение находками',
+            'Оформи как второй кейс'
+          ] },
+        { m: H, seg: ['Портфолио: Notion или ', { url: 'https://www.behance.net' }, ' — только реальные работы, без выдуманных клиентов'],
+          steps: [
+            'Собери оба кейса и лучшие копии экранов в одном месте',
+            'Убери всё слабое: 2 сильных кейса лучше пяти сырых',
+            'Проверь ссылку с чужого устройства'
+          ] },
+        { m: H, t: 'Резюме + LinkedIn под junior product/UX designer; заранее определить зарплатную вилку',
+          steps: [
+            'Обнови резюме: роль, 2 кейса, навыки Figma и ресёрча',
+            'Заполни LinkedIn по тому же шаблону',
+            'Определи зарплатную вилку и запиши её'
+          ] },
+        { m: H, t: 'Отклики 10–15 в неделю: junior UX/UI, product designer, стажировки — Indeed, LinkedIn, hh.ru, career.habr.com',
+          steps: [
+            'Настрой фильтры и сохрани поиски на площадках',
+            'Отправляй 2–3 отклика в день с короткой запиской',
+            'Веди простой список: куда, когда, что ответили'
+          ] },
         { m: W, t: 'Разборы собеседований дизайнеров',
-          links: ['https://www.youtube.com/results?search_query=junior+product+designer+interview+portfolio+review'] },
-        { m: H, gate: true, t: '30 отправленных откликов ИЛИ 3 собеседования' }
+          links: ['https://www.youtube.com/results?search_query=junior+product+designer+interview+portfolio+review'],
+          steps: [
+            'Посмотри 2–3 разбора по ссылке',
+            'Выпиши частые вопросы и набросай свои ответы',
+            'Отрепетируй рассказ о кейсе на 3 минуты вслух'
+          ] },
+        { m: H, gate: true, t: '30 отправленных откликов ИЛИ 3 собеседования',
+          steps: [
+            'Посчитай отклики в своём списке',
+            'Дошёл до 30 откликов или 3 собеседований — закрывай гейт'
+          ] }
       ]
     },
     {
       title: 'Этап 5 — Роль (месяцы 3–4+)',
       tasks: [
         { m: H, t: 'Бесплатный ментор на ADPList (фильтр UX): разбор портфолио и мок-собес',
-          links: ['https://adplist.org'] },
+          links: ['https://adplist.org'],
+          steps: [
+            'Зарегистрируйся и найди менторов с фильтром UX',
+            'Забронируй две сессии: разбор портфолио и мок-собеседование',
+            'После каждой сессии внеси правки по фидбеку'
+          ] },
         { m: W, t: 'Фоном, по желанию: Google UX Design на Coursera — для сертификата и добора теории, не для гейтов',
-          links: ['https://www.coursera.org/professional-certificates/google-ux-design'] },
-        { m: H, gate: true, t: 'оффер (full/part-time или стажировка)' }
+          links: ['https://www.coursera.org/professional-certificates/google-ux-design'],
+          steps: [
+            'Запишись на курс и проходи фоном, без давления',
+            'Получишь сертификат — добавь в резюме'
+          ] },
+        { m: H, gate: true, t: 'оффер (full/part-time или стажировка)',
+          steps: [
+            'Получил оффер — перечитай условия спокойно, не соглашайся прямо в звонке',
+            'Прими решение и закрой гейт 🎉'
+          ] }
       ]
     }
   ];
 
+  /* ---------- state ---------- */
+
   function loadState() {
     try {
       var v = JSON.parse(localStorage.getItem(STORE_KEY));
-      return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
-    }
-    catch (e) { return {}; }
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        var out = { steps: {}, streak: { count: 0, last: '' }, activity: {}, focusTask: '' };
+        if (v.steps && typeof v.steps === 'object' && !Array.isArray(v.steps)) out.steps = v.steps;
+        if (v.streak && typeof v.streak === 'object' && !Array.isArray(v.streak)) {
+          out.streak.count = typeof v.streak.count === 'number' && isFinite(v.streak.count) ? v.streak.count : 0;
+          out.streak.last = typeof v.streak.last === 'string' ? v.streak.last : '';
+        }
+        if (v.activity && typeof v.activity === 'object' && !Array.isArray(v.activity)) {
+          Object.keys(v.activity).forEach(function (k) {
+            var n = Number(v.activity[k]);
+            if (isFinite(n) && n > 0) out.activity[k] = n;
+          });
+        }
+        if (typeof v.focusTask === 'string') out.focusTask = v.focusTask;
+        return out;
+      }
+    } catch (e) {}
+    return { steps: {}, streak: { count: 0, last: '' }, activity: {}, focusTask: '' };
   }
   function saveState() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function todayKey() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function dateKeyOffset(offset) {
+    var d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  var state = loadState();
+
+  /* ---------- derived helpers ---------- */
+
+  function taskId(si, ti) { return 's' + si + '-t' + ti; }
+  function stepId(si, ti, pi) { return taskId(si, ti) + '-p' + pi; }
+  function taskTitleText(task) {
+    if (!task.seg) return task.t;
+    return task.seg.map(function (p) { return typeof p === 'string' ? p : hostOf(p.url); }).join('');
   }
   function hostOf(url) {
     try { return new URL(url).hostname.replace(/^www\./, ''); }
     catch (e) { return url; }
   }
-
-  var state = loadState();
-  var totalTasks = STAGES.reduce(function (n, s) { return n + s.tasks.length; }, 0);
-
-  var stagesEl = document.getElementById('stages');
-  var overallBar = document.getElementById('overallBar');
-  var overallFill = document.getElementById('overallFill');
-  var overallPct = document.getElementById('overallPct');
-  var stageRefs = [];
-
-  STAGES.forEach(function (stage, si) {
-    var section = document.createElement('section');
-    section.className = 'stage';
-    section.dataset.collapsed = 'true';
-
-    var bodyId = 'stage-body-' + si;
-
-    var head = document.createElement('button');
-    head.type = 'button';
-    head.className = 'stage-head';
-    head.setAttribute('aria-expanded', 'false');
-    head.setAttribute('aria-controls', bodyId);
-
-    var titleRow = document.createElement('span');
-    titleRow.className = 'stage-title-row';
-    var chev = document.createElement('span');
-    chev.className = 'chev';
-    chev.setAttribute('aria-hidden', 'true');
-    chev.textContent = '▸';
-    var titleEl = document.createElement('span');
-    titleEl.className = 'stage-title';
-    titleEl.textContent = stage.title;
-    titleRow.appendChild(chev);
-    titleRow.appendChild(titleEl);
-
-    var prog = document.createElement('span');
-    prog.className = 'stage-progress';
-    var bar = document.createElement('span');
-    bar.className = 'bar';
-    bar.setAttribute('role', 'progressbar');
-    bar.setAttribute('aria-label', 'Прогресс: ' + stage.title);
-    bar.setAttribute('aria-valuemin', '0');
-    bar.setAttribute('aria-valuemax', '100');
-    bar.setAttribute('aria-valuenow', '0');
-    var fill = document.createElement('span');
-    fill.className = 'fill';
-    bar.appendChild(fill);
-    var pct = document.createElement('span');
-    pct.className = 'pct';
-    pct.textContent = '0%';
-    prog.appendChild(bar);
-    prog.appendChild(pct);
-
-    head.appendChild(titleRow);
-    head.appendChild(prog);
-
-    var body = document.createElement('div');
-    body.className = 'stage-body';
-    body.id = bodyId;
-    var list = document.createElement('ul');
-    list.className = 'tasks';
-
-    var items = [];
-
-    stage.tasks.forEach(function (task, ti) {
-      var id = 's' + si + '-t' + ti;
-      var li = document.createElement('li');
-      li.className = 'task' + (task.gate ? ' gate' : '');
-      li.dataset.mode = task.m;
-
-      var label = document.createElement('label');
-      label.className = 'task-label';
-      var cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.checked = state[id] === true;
-
-      var text = document.createElement('span');
-      text.className = 'task-text';
-      text.appendChild(document.createTextNode((task.m === W ? '🎥' : '🛠') + ' '));
-      if (task.gate) {
-        var badge = document.createElement('span');
-        badge.className = 'gate-badge';
-        badge.textContent = 'Гейт';
-        text.appendChild(badge);
+  function taskDone(si, ti) {
+    var task = STAGES[si].tasks[ti];
+    for (var pi = 0; pi < task.steps.length; pi++) {
+      if (!state.steps[stepId(si, ti, pi)]) return false;
+    }
+    return true;
+  }
+  function stageClosed(si) {
+    var ok = false;
+    STAGES[si].tasks.forEach(function (task, ti) {
+      if (task.gate) ok = taskDone(si, ti);
+    });
+    return ok;
+  }
+  function stageDoneCount(si) {
+    var n = 0;
+    STAGES[si].tasks.forEach(function (task, ti) { if (taskDone(si, ti)) n++; });
+    return n;
+  }
+  function currentStageIndex() {
+    for (var i = 0; i < STAGES.length; i++) if (!stageClosed(i)) return i;
+    return -1;
+  }
+  function allTaskIds() {
+    var out = [];
+    STAGES.forEach(function (s, si) { s.tasks.forEach(function (t, ti) { out.push([si, ti]); }); });
+    return out;
+  }
+  function findTask(id) {
+    var all = allTaskIds();
+    for (var i = 0; i < all.length; i++) if (taskId(all[i][0], all[i][1]) === id) return all[i];
+    return null;
+  }
+  function currentTask() {
+    if (state.focusTask) {
+      var f = findTask(state.focusTask);
+      if (f && !taskDone(f[0], f[1])) return f;
+    }
+    var csi = currentStageIndex();
+    if (csi === -1) return null;
+    for (var si = csi; si < STAGES.length; si++) {
+      for (var ti = 0; ti < STAGES[si].tasks.length; ti++) {
+        if (!taskDone(si, ti)) return [si, ti];
       }
-      if (task.seg) {
-        task.seg.forEach(function (part) {
-          if (typeof part === 'string') {
-            text.appendChild(document.createTextNode(part));
-          } else {
-            var ia = document.createElement('a');
-            ia.className = 'inline-link';
-            ia.href = part.url;
-            ia.target = '_blank';
-            ia.rel = 'noopener noreferrer';
-            ia.textContent = hostOf(part.url);
-            text.appendChild(ia);
-          }
-        });
-      } else {
-        text.appendChild(document.createTextNode(task.t));
+    }
+    for (si = 0; si < STAGES.length; si++) {
+      for (ti = 0; ti < STAGES[si].tasks.length; ti++) {
+        if (!taskDone(si, ti)) return [si, ti];
       }
-
-      label.appendChild(cb);
-      label.appendChild(text);
-      li.appendChild(label);
-
-      if (task.gate) {
-        var note = document.createElement('p');
-        note.className = 'gate-note';
-        note.textContent = 'Этап закрывается только этой задачей';
-        li.appendChild(note);
-      }
-
-      if (task.links) {
-        var linksEl = document.createElement('div');
-        linksEl.className = 'task-links';
-        task.links.forEach(function (url) {
-          var a = document.createElement('a');
-          a.className = 'link-chip';
-          a.href = url;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          a.textContent = hostOf(url) + ' ↗';
-          linksEl.appendChild(a);
-        });
-        li.appendChild(linksEl);
-      }
-
-      cb.addEventListener('change', function () {
-        if (cb.checked) state[id] = true;
-        else delete state[id];
-        saveState();
-        refresh();
+    }
+    return null;
+  }
+  function nextIncompleteAfter(id) {
+    var all = allTaskIds().filter(function (p) { return !taskDone(p[0], p[1]); });
+    if (all.length < 2) return null;
+    var idx = -1;
+    for (var i = 0; i < all.length; i++) if (taskId(all[i][0], all[i][1]) === id) { idx = i; break; }
+    return all[(idx + 1) % all.length];
+  }
+  function totals() {
+    var steps = 0, stepsDone = 0, tasks = 0, tasksDone = 0, gatesDone = 0;
+    STAGES.forEach(function (s, si) {
+      s.tasks.forEach(function (task, ti) {
+        tasks++;
+        steps += task.steps.length;
+        task.steps.forEach(function (_, pi) { if (state.steps[stepId(si, ti, pi)]) stepsDone++; });
+        if (taskDone(si, ti)) { tasksDone++; if (task.gate) gatesDone++; }
       });
+    });
+    return { steps: steps, stepsDone: stepsDone, tasks: tasks, tasksDone: tasksDone, gatesDone: gatesDone };
+  }
 
-      items.push({ cb: cb, li: li, task: task });
+  /* ---------- streak ---------- */
+
+  function bumpStreak() {
+    var today = todayKey();
+    if (state.streak.last !== today) {
+      state.streak.count = (state.streak.last === dateKeyOffset(-1)) ? state.streak.count + 1 : 1;
+      state.streak.last = today;
+    }
+    state.activity[today] = (state.activity[today] || 0) + 1;
+  }
+  function currentStreak() {
+    var last = state.streak.last;
+    if (!last) return 0;
+    if (last === todayKey() || last === dateKeyOffset(-1)) return state.streak.count;
+    return 0;
+  }
+
+  /* ---------- rendering ---------- */
+
+  var viewNow = document.getElementById('view-now');
+  var viewMap = document.getElementById('view-map');
+  var viewMe = document.getElementById('view-me');
+  var activeTab = 'now';
+  var mapFilter = 'all';
+  var openStages = null;
+  var justCompleted = '';
+  var pendingAdvance = null;
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+  function ringSVG(size, stroke, pct, cls) {
+    var r = (size - stroke) / 2;
+    var c = 2 * Math.PI * r;
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', 'ring' + (cls ? ' ' + cls : ''));
+    svg.setAttribute('width', size); svg.setAttribute('height', size);
+    svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+    svg.setAttribute('aria-hidden', 'true');
+    var track = document.createElementNS(svgNS, 'circle');
+    track.setAttribute('class', 'track');
+    track.setAttribute('cx', size / 2); track.setAttribute('cy', size / 2);
+    track.setAttribute('r', r); track.setAttribute('stroke-width', stroke);
+    var val = document.createElementNS(svgNS, 'circle');
+    val.setAttribute('class', 'val');
+    val.setAttribute('cx', size / 2); val.setAttribute('cy', size / 2);
+    val.setAttribute('r', r); val.setAttribute('stroke-width', stroke);
+    val.setAttribute('stroke-dasharray', c);
+    val.setAttribute('stroke-dashoffset', c * (1 - pct / 100));
+    svg.appendChild(track); svg.appendChild(val);
+    return svg;
+  }
+  function titleSpan(task) {
+    var span = el('span');
+    if (task.seg) {
+      task.seg.forEach(function (part) {
+        if (typeof part === 'string') span.appendChild(document.createTextNode(part));
+        else {
+          var a = el('a', 'inline-link', hostOf(part.url));
+          a.href = part.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+          span.appendChild(a);
+        }
+      });
+    } else {
+      span.appendChild(document.createTextNode(task.t));
+    }
+    return span;
+  }
+
+  function renderTopbar() {
+    var t = totals();
+    var pct = t.steps ? Math.round(t.stepsDone / t.steps * 100) : 0;
+    var streak = currentStreak();
+    document.getElementById('streakN').textContent = streak;
+    document.getElementById('streakPill').classList.toggle('on', streak > 0);
+    document.getElementById('topRingPct').textContent = pct + '%';
+    var val = document.getElementById('topRingVal');
+    var c = 2 * Math.PI * 10.5;
+    val.setAttribute('stroke-dasharray', c);
+    val.setAttribute('stroke-dashoffset', c * (1 - pct / 100));
+  }
+
+  function renderNow() {
+    viewNow.textContent = '';
+    var cur = justCompleted ? findTask(justCompleted) : currentTask();
+    if (!cur) {
+      var doneBox = el('div', 'all-done');
+      doneBox.appendChild(el('div', 'big', '🏁'));
+      doneBox.appendChild(el('h2', '', 'Роадмап пройден'));
+      doneBox.appendChild(el('p', '', 'Все этапы закрыты. Дальше — работа.'));
+      viewNow.appendChild(doneBox);
+      return;
+    }
+    var si = cur[0], ti = cur[1];
+    var task = STAGES[si].tasks[ti];
+    var isDone = taskDone(si, ti);
+
+    viewNow.appendChild(el('div', 'eyebrow', isDone ? 'Задача закрыта' : 'Твой следующий шаг'));
+    viewNow.appendChild(el('p', 'focus-lede', isDone ? 'Готово. Сейчас покажу следующую.' : 'Не думай про весь путь. Только эта карточка.'));
+
+    var card = el('div', 'focus-card' + (isDone ? ' is-done' : ''));
+    card.appendChild(el('div', 'focus-stage', STAGES[si].title));
+
+    var meta = el('div', 'focus-meta');
+    meta.appendChild(el('span', 'chip', task.m === W ? '🎥 Смотреть' : '🛠 Руками'));
+    if (task.gate) meta.appendChild(el('span', 'chip gate', 'Гейт'));
+    card.appendChild(meta);
+
+    var title = el('h2', 'focus-title');
+    title.appendChild(titleSpan(task));
+    card.appendChild(title);
+    if (task.gate) card.appendChild(el('p', 'gate-note', 'Этап закрывается только этой задачей'));
+
+    var list = el('ul', 'steps');
+    var firstOpen = -1;
+    task.steps.forEach(function (_, pi) {
+      if (firstOpen === -1 && !state.steps[stepId(si, ti, pi)]) firstOpen = pi;
+    });
+    task.steps.forEach(function (stepText, pi) {
+      var id = stepId(si, ti, pi);
+      var done = !!state.steps[id];
+      var li = el('li', 'step' + (done ? ' done' : '') + (pi === firstOpen ? ' now' : ''));
+      var btn = el('button', 'step-btn');
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', done ? 'true' : 'false');
+      btn.dataset.step = id;
+      btn.appendChild(el('span', 'step-check'));
+      btn.appendChild(el('span', 'step-text', stepText));
+      li.appendChild(btn);
       list.appendChild(li);
     });
+    card.appendChild(list);
 
-    body.appendChild(list);
-    section.appendChild(head);
-    section.appendChild(body);
-    stagesEl.appendChild(section);
-
-    var ref = { section: section, head: head, chev: chev, bar: bar, fill: fill, pct: pct, items: items };
-    head.addEventListener('click', function () {
-      setCollapsed(ref, section.dataset.collapsed !== 'true');
-    });
-    stageRefs.push(ref);
-  });
-
-  function setCollapsed(ref, collapsed) {
-    ref.section.dataset.collapsed = collapsed ? 'true' : 'false';
-    ref.head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-    ref.chev.textContent = collapsed ? '▸' : '▾';
-  }
-
-  function refresh() {
-    var doneTotal = 0;
-    stageRefs.forEach(function (ref) {
-      var done = 0;
-      ref.items.forEach(function (it) {
-        var on = it.cb.checked;
-        if (on) { done++; doneTotal++; }
-        it.li.classList.toggle('done', on);
+    if (task.links) {
+      var links = el('div', 'task-links');
+      task.links.forEach(function (url) {
+        var a = el('a', 'link-chip', hostOf(url) + ' ↗');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        links.appendChild(a);
       });
-      var p = ref.items.length ? Math.round(done / ref.items.length * 100) : 0;
-      ref.fill.style.width = p + '%';
-      ref.pct.textContent = p + '%';
-      ref.bar.setAttribute('aria-valuenow', String(p));
-      ref.section.classList.toggle('done', done === ref.items.length);
-    });
-    var op = totalTasks ? Math.round(doneTotal / totalTasks * 100) : 0;
-    overallFill.style.width = op + '%';
-    overallPct.textContent = op + '%';
-    overallBar.setAttribute('aria-valuenow', String(op));
-  }
-
-  function openCurrent() {
-    var current = -1;
-    for (var i = 0; i < stageRefs.length; i++) {
-      var gates = stageRefs[i].items.filter(function (it) { return it.task.gate; });
-      var closed = gates.length > 0 && gates.every(function (it) { return it.cb.checked; });
-      if (!closed) { current = i; break; }
+      card.appendChild(links);
     }
-    stageRefs.forEach(function (ref, i) {
-      setCollapsed(ref, i !== current);
+
+    var actions = el('div', 'focus-actions');
+    if (isDone) {
+      actions.appendChild(el('span', 'done-note', '✓ Все шаги сделаны'));
+    } else {
+      var other = el('button', 'ghost-btn', 'Показать другую задачу →');
+      other.type = 'button';
+      other.id = 'otherTaskBtn';
+      actions.appendChild(other);
+    }
+    card.appendChild(actions);
+
+    viewNow.appendChild(card);
+  }
+
+  function renderMap() {
+    viewMap.textContent = '';
+    var t = totals();
+    var pct = t.steps ? Math.round(t.stepsDone / t.steps * 100) : 0;
+    var csi = currentStageIndex();
+    if (openStages === null) {
+      openStages = {};
+      if (csi !== -1) openStages[csi] = true;
+    }
+
+    var head = el('div', 'map-head');
+    var ringWrap = el('div', 'stage-ring');
+    ringWrap.appendChild(ringSVG(44, 5, pct));
+    ringWrap.appendChild(el('span', 'in', pct + '%'));
+    head.appendChild(ringWrap);
+    var headText = el('div', 'map-head-text');
+    headText.appendChild(el('h1', '', 'UX: от нуля до найма'));
+    headText.appendChild(el('p', 'map-sub', 'Цель — роль junior product/UX-дизайнера с сильным ресёрчем. Кейсы решают, не сертификаты. Этап закрывается только 🛠-гейтом.'));
+    head.appendChild(headText);
+    viewMap.appendChild(head);
+
+    var filters = el('div', 'filters');
+    [['all', 'Все'], ['watch', '🎥 Смотреть'], ['hands', '🛠 Руками']].forEach(function (f) {
+      var b = el('button', 'filter-btn', f[1]);
+      b.type = 'button';
+      b.dataset.filter = f[0];
+      b.setAttribute('aria-pressed', mapFilter === f[0] ? 'true' : 'false');
+      filters.appendChild(b);
+    });
+    viewMap.appendChild(filters);
+
+    STAGES.forEach(function (stage, si) {
+      var closed = stageClosed(si);
+      var card = el('section', 'stage-card' + (closed ? ' closed' : '') + (si === csi ? ' here' : ''));
+      card.dataset.open = openStages[si] ? 'true' : 'false';
+
+      var headBtn = el('button', 'stage-head');
+      headBtn.type = 'button';
+      headBtn.dataset.stage = si;
+      headBtn.setAttribute('aria-expanded', openStages[si] ? 'true' : 'false');
+
+      var ht = el('div', 'stage-head-text');
+      var eyebrow = el('div', 'stage-eyebrow');
+      eyebrow.appendChild(document.createTextNode('Этап ' + si));
+      if (si === csi) {
+        eyebrow.appendChild(document.createTextNode(' · '));
+        eyebrow.appendChild(el('span', 'here-tag', 'ты здесь'));
+      }
+      if (closed) {
+        eyebrow.appendChild(document.createTextNode(' · '));
+        eyebrow.appendChild(el('span', 'here-tag', 'закрыт'));
+      }
+      ht.appendChild(eyebrow);
+      ht.appendChild(el('div', 'stage-name', stage.title.replace(/^Этап \d+ — /, '')));
+      ht.appendChild(el('div', 'stage-count', stageDoneCount(si) + ' из ' + stage.tasks.length + ' задач'));
+      headBtn.appendChild(ht);
+
+      var spct = Math.round(stageDoneCount(si) / stage.tasks.length * 100);
+      var sr = el('div', 'stage-ring');
+      sr.appendChild(ringSVG(44, 4.5, spct));
+      sr.appendChild(el('span', 'in', spct + '%'));
+      headBtn.appendChild(sr);
+      card.appendChild(headBtn);
+
+      var body = el('div', 'stage-body');
+      stage.tasks.forEach(function (task, ti) {
+        if (mapFilter === 'watch' && task.m !== W) return;
+        if (mapFilter === 'hands' && task.m !== H) return;
+        var done = taskDone(si, ti);
+        var row = el('button', 'trow' + (done ? ' done' : ''));
+        row.type = 'button';
+        row.dataset.task = taskId(si, ti);
+        row.appendChild(el('span', 'trow-dot'));
+        var txt = el('span', 'trow-text');
+        txt.appendChild(document.createTextNode((task.m === W ? '🎥 ' : '🛠 ')));
+        if (task.gate) txt.appendChild(el('span', 'trow-gate', 'Гейт'));
+        txt.appendChild(document.createTextNode(taskTitleText(task)));
+        row.appendChild(txt);
+        body.appendChild(row);
+      });
+      card.appendChild(body);
+      viewMap.appendChild(card);
     });
   }
 
-  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filter-btn'));
-  filterBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.body.dataset.filter = btn.dataset.filter;
-      filterBtns.forEach(function (b) {
-        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-      });
+  function renderMe() {
+    viewMe.textContent = '';
+    var t = totals();
+    var streak = currentStreak();
+
+    var hero = el('div', 'me-hero');
+    hero.appendChild(el('div', 'me-streak', '🔥 ' + streak));
+    hero.appendChild(el('div', 'me-streak-label', streak === 1 ? 'день подряд' : 'дней подряд'));
+    var dots = el('div', 'dots');
+    for (var i = 13; i >= 0; i--) {
+      var key = dateKeyOffset(-i);
+      dots.appendChild(el('span', 'dot' + (state.activity[key] ? ' on' : '')));
+    }
+    hero.appendChild(dots);
+    hero.appendChild(el('div', 'dots-label', 'последние 14 дней'));
+    viewMe.appendChild(hero);
+
+    var stats = el('div', 'stats');
+    [[t.stepsDone, 'шагов сделано'], [t.tasksDone, 'задач закрыто'], [t.gatesDone + ' / ' + STAGES.length, 'гейтов']].forEach(function (s) {
+      var box = el('div', 'stat');
+      box.appendChild(el('div', 'n', String(s[0])));
+      box.appendChild(el('div', 'l', s[1]));
+      stats.appendChild(box);
     });
+    viewMe.appendChild(stats);
+
+    var row = el('div', 'reset-row');
+    var btn = el('button', '', 'Сбросить прогресс');
+    btn.type = 'button';
+    btn.id = 'resetBtn';
+    row.appendChild(btn);
+    viewMe.appendChild(row);
+  }
+
+  function renderActive() {
+    renderTopbar();
+    if (activeTab === 'now') renderNow();
+    else if (activeTab === 'map') renderMap();
+    else renderMe();
+  }
+
+  function switchTab(name) {
+    if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+    justCompleted = '';
+    activeTab = name;
+    viewNow.hidden = name !== 'now';
+    viewMap.hidden = name !== 'map';
+    viewMe.hidden = name !== 'me';
+    document.querySelectorAll('.tab').forEach(function (b) {
+      b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false');
+    });
+    renderActive();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- celebration ---------- */
+
+  var celebrateEl = document.getElementById('celebrate');
+  var behind = [document.querySelector('.topbar'), document.querySelector('main'), document.querySelector('.tabbar')];
+  function setBehindInert(on) {
+    behind.forEach(function (n) {
+      if (on) n.setAttribute('inert', '');
+      else n.removeAttribute('inert');
+    });
+  }
+  function showCelebration(si) {
+    var allClosed = STAGES.every(function (_, i) { return stageClosed(i); });
+    document.getElementById('celebrateTitle').textContent = allClosed ? 'Роадмап пройден!' : 'Этап закрыт!';
+    document.getElementById('celebrateText').textContent = allClosed
+      ? STAGES[si].title + ' — это был последний гейт. Дальше — работа.'
+      : STAGES[si].title + ' позади. Гейт взят руками, как и положено.';
+    document.getElementById('celebrateNext').textContent = allClosed ? 'Финиш' : 'Дальше';
+    celebrateEl.hidden = false;
+    setBehindInert(true);
+    document.getElementById('celebrateNext').focus();
+  }
+  function hideCelebration() {
+    celebrateEl.hidden = true;
+    setBehindInert(false);
+    renderActive();
+    var tab = document.querySelector('.tab[aria-selected="true"]');
+    if (tab) tab.focus();
+  }
+
+  /* ---------- events ---------- */
+
+  document.querySelector('.tabbar').addEventListener('click', function (e) {
+    var b = e.target.closest('.tab');
+    if (b) switchTab(b.dataset.tab);
   });
 
-  document.getElementById('resetBtn').addEventListener('click', function () {
-    if (!confirm('Сбросить весь прогресс? Отменить это будет нельзя.')) return;
-    state = {};
-    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
-    stageRefs.forEach(function (ref) {
-      ref.items.forEach(function (it) { it.cb.checked = false; });
-    });
-    refresh();
-    openCurrent();
+  viewNow.addEventListener('click', function (e) {
+    var stepBtn = e.target.closest('[data-step]');
+    if (stepBtn) {
+      var id = stepBtn.dataset.step;
+      var parts = id.match(/^s(\d+)-t(\d+)-p\d+$/);
+      var si = Number(parts[1]), ti = Number(parts[2]);
+      var wasDone = taskDone(si, ti);
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      justCompleted = '';
+      if (state.steps[id]) {
+        delete state.steps[id];
+      } else {
+        state.steps[id] = true;
+        bumpStreak();
+      }
+      var nowDone = taskDone(si, ti);
+      if (nowDone && state.focusTask === taskId(si, ti)) state.focusTask = '';
+      saveState();
+      if (!wasDone && nowDone && STAGES[si].tasks[ti].gate) {
+        renderTopbar();
+        showCelebration(si);
+        return;
+      }
+      if (!wasDone && nowDone) {
+        justCompleted = taskId(si, ti);
+        renderTopbar();
+        renderNow();
+        pendingAdvance = setTimeout(function () {
+          pendingAdvance = null;
+          justCompleted = '';
+          renderActive();
+        }, 1100);
+        return;
+      }
+      renderActive();
+      return;
+    }
+    var other = e.target.closest('#otherTaskBtn');
+    if (other) {
+      var cur = currentTask();
+      if (cur) {
+        var next = nextIncompleteAfter(taskId(cur[0], cur[1]));
+        if (next) {
+          state.focusTask = taskId(next[0], next[1]);
+          saveState();
+          renderNow();
+        }
+      }
+    }
   });
 
-  refresh();
-  openCurrent();
+  viewMap.addEventListener('click', function (e) {
+    var f = e.target.closest('[data-filter]');
+    if (f) { mapFilter = f.dataset.filter; renderMap(); return; }
+    var sh = e.target.closest('[data-stage]');
+    if (sh) {
+      var si = Number(sh.dataset.stage);
+      openStages[si] = !openStages[si];
+      renderMap();
+      return;
+    }
+    var row = e.target.closest('[data-task]');
+    if (row && !e.target.closest('a')) {
+      state.focusTask = row.dataset.task;
+      saveState();
+      switchTab('now');
+    }
+  });
+
+  viewMe.addEventListener('click', function (e) {
+    if (e.target.closest('#resetBtn')) {
+      if (!confirm('Сбросить весь прогресс? Отменить это будет нельзя.')) return;
+      if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
+      justCompleted = '';
+      state = { steps: {}, streak: { count: 0, last: '' }, activity: {}, focusTask: '' };
+      try { localStorage.removeItem(STORE_KEY); } catch (err) {}
+      openStages = null;
+      renderActive();
+    }
+  });
+
+  document.getElementById('celebrateNext').addEventListener('click', hideCelebration);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !celebrateEl.hidden) hideCelebration();
+  });
+
+  /* ---------- init ---------- */
+  switchTab('now');
 })();
 </script>
 </body>
