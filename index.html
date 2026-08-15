@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111417">
+<title>UX-исследования: от нуля до роли</title>
+<style>
+:root{
+  --bg:#111417;
+  --surface:#1a1f24;
+  --surface2:#22282e;
+  --border:#2b333b;
+  --text:#e7eaee;
+  --muted:#98a2ac;
+  --accent:#e3a24f;
+  --accent-dim:rgba(227,162,79,.08);
+  --accent-ink:#241703;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.55;
+}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 56px}
+
+.page-head{padding:28px 0 16px}
+h1{font-size:27px;line-height:1.2;letter-spacing:-.3px}
+.subtitle{color:var(--muted);font-size:16px;margin-top:10px}
+
+.topbar{
+  position:sticky;top:0;z-index:10;
+  background:var(--bg);
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.overall{display:flex;align-items:center;gap:12px}
+.overall-label{font-size:14px;color:var(--muted);flex:none}
+.bar{
+  display:block;flex:1;height:8px;
+  background:var(--surface2);
+  border-radius:99px;overflow:hidden;
+}
+.fill{display:block;height:100%;width:0;background:var(--accent);border-radius:99px}
+.overall .pct{
+  flex:none;min-width:46px;text-align:right;
+  font-size:15px;font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums;
+}
+
+.filters{display:flex;gap:8px;margin:16px 0 20px}
+.filter-btn{
+  flex:1;min-height:44px;padding:8px 4px;
+  font:inherit;font-size:15px;cursor:pointer;
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);border-radius:10px;
+}
+.filter-btn[aria-pressed="true"]{
+  background:var(--accent);border-color:var(--accent);
+  color:var(--accent-ink);font-weight:700;
+}
+
+.stage{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:14px;
+  overflow:hidden;
+}
+.stage-head{
+  display:block;width:100%;min-height:44px;
+  padding:16px;
+  font:inherit;text-align:left;cursor:pointer;
+  background:none;border:0;color:inherit;
+}
+.stage-title-row{display:flex;gap:10px;align-items:baseline}
+.chev{flex:none;width:1em;color:var(--muted);font-size:13px}
+.stage-title{font-size:17px;font-weight:650;line-height:1.35}
+.stage-progress{
+  display:flex;align-items:center;gap:10px;
+  margin-top:10px;padding-left:calc(1em + 10px);
+}
+.stage-progress .pct{
+  flex:none;min-width:40px;text-align:right;
+  font-size:13px;color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.stage.done .stage-progress .pct{color:var(--accent);font-weight:700}
+
+.stage[data-collapsed="true"] .stage-body{display:none}
+.stage-body{border-top:1px solid var(--border);padding:6px 16px 16px}
+
+.tasks{list-style:none}
+.task{padding:6px 0;border-bottom:1px solid var(--border)}
+.task:last-child{border-bottom:0}
+
+.task-label{
+  display:flex;gap:12px;align-items:flex-start;
+  min-height:44px;padding:6px 0;cursor:pointer;
+}
+.task-label input{
+  appearance:none;-webkit-appearance:none;
+  flex:none;width:26px;height:26px;margin-top:2px;
+  display:inline-grid;place-content:center;
+  background:transparent;
+  border:2px solid #57626d;border-radius:8px;
+  cursor:pointer;
+}
+.task-label input::after{
+  content:"";width:12px;height:7px;
+  border-left:2.5px solid var(--accent-ink);
+  border-bottom:2.5px solid var(--accent-ink);
+  transform:rotate(-45deg) translateY(-1px);
+  opacity:0;
+}
+.task-label input:checked{background:var(--accent);border-color:var(--accent)}
+.task-label input:checked::after{opacity:1}
+.task-label input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.task-text{font-size:16px;padding-top:2px}
+.task.done .task-text{
+  color:var(--muted);
+  text-decoration:line-through;
+  text-decoration-thickness:1px;
+}
+
+.task-links{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin:2px 0 8px 38px;
+}
+.link-chip{
+  display:inline-flex;align-items:center;
+  min-height:44px;padding:8px 16px;
+  background:var(--surface2);
+  border:1px solid var(--border);border-radius:99px;
+  color:var(--accent);text-decoration:none;font-size:14px;
+}
+
+.task.gate{
+  border:1.5px solid var(--accent);
+  border-radius:12px;
+  background:var(--accent-dim);
+  padding:8px 12px;
+  margin:12px 0 4px;
+}
+.gate-badge{
+  display:inline-block;
+  background:var(--accent);color:var(--accent-ink);
+  font-size:12.5px;font-weight:700;line-height:1;
+  padding:4px 8px;border-radius:6px;
+  margin-right:8px;
+  transform:translateY(-1.5px);
+}
+.gate-note{margin:0 0 6px 38px;font-size:13.5px;color:var(--muted)}
+
+.reset-row{margin-top:32px;text-align:center}
+#resetBtn{
+  min-height:48px;padding:12px 24px;
+  font:inherit;font-size:15px;cursor:pointer;
+  background:var(--surface);color:var(--muted);
+  border:1px solid var(--border);border-radius:10px;
+}
+
+body[data-filter="watch"] .task[data-mode="hands"],
+body[data-filter="hands"] .task[data-mode="watch"]{display:none}
+
+@media (min-width:600px){
+  h1{font-size:32px}
+  .page-head{padding-top:40px}
+}
+</style>
+</head>
+<body data-filter="all">
+<div class="wrap">
+
+  <header class="page-head">
+    <h1>UX-исследования: от нуля до роли</h1>
+    <p class="subtitle">Видео не двигают этапы — двигают руки. Этап закрывается только 🛠-гейтом.</p>
+  </header>
+
+  <div class="topbar">
+    <div class="overall">
+      <span class="overall-label">Общий прогресс</span>
+      <span class="bar" id="overallBar" role="progressbar" aria-label="Общий прогресс"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="fill" id="overallFill"></span></span>
+      <span class="pct" id="overallPct">0%</span>
+    </div>
+  </div>
+
+  <div class="filters" role="group" aria-label="Фильтр задач">
+    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Все</button>
+    <button type="button" class="filter-btn" data-filter="watch" aria-pressed="false">🎥 Смотреть</button>
+    <button type="button" class="filter-btn" data-filter="hands" aria-pressed="false">🛠 Руками</button>
+  </div>
+
+  <main id="stages"></main>
+
+  <div class="reset-row">
+    <button type="button" id="resetBtn">Сбросить прогресс</button>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORE_KEY = 'uxRoadmap.progress.v1';
+  var W = 'watch', H = 'hands';
+
+  var STAGES = [
+    {
+      title: 'Этап 0 — Проверка «моё / не моё» (2–4 дня)',
+      tasks: [
+        { m: W, t: 'Посмотреть демо юзабилити-теста Стива Круга (~25 мин)',
+          links: ['https://www.youtube.com/results?search_query=steve+krug+usability+test+demo'] },
+        { m: W, t: 'Посмотреть одну запись реальной сессии',
+          links: ['https://www.youtube.com/results?search_query=usability+testing+session+recording'] },
+        { m: W, t: 'Прочитать NNgroup «UX Research Cheat Sheet»',
+          links: ['https://www.nngroup.com/articles/ux-research-cheat-sheet/'] },
+        { m: W, t: 'Домашка: выписать все вопросы модератора + 3 находки «что мешало и почему»' },
+        { m: H, gate: true, t: 'Провести 1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)' }
+      ]
+    },
+    {
+      title: 'Этап 1 — База ремесла (недели 1–2)',
+      tasks: [
+        { m: W, t: 'Google UX Design (Coursera): пройти курсы 1–2 и курс 4 (Conduct UX Research), дизайн-курсы пропустить',
+          links: ['https://www.coursera.org/professional-certificates/google-ux-design'] },
+        { m: W, t: 'NNgroup на YouTube: плейлисты про usability testing и user interviews',
+          links: ['https://www.youtube.com/@NNgroup'] },
+        { m: W, t: 'Книга: Steve Krug «Don’t Make Me Think» (конспект или аудио)' },
+        { m: H, t: 'Юзабилити-тест №1 (новый человек, новый сайт) + отчёт на 1 страницу' },
+        { m: H, t: 'Юзабилити-тест №2 + отчёт на 1 страницу' },
+        { m: H, t: 'Юзабилити-тест №3 + отчёт на 1 страницу' },
+        { m: H, t: 'Интервью на 20 минут + отчёт на 1 страницу' },
+        { m: H, t: 'Зарегистрироваться как участник тестов:',
+          links: ['https://www.usertesting.com', 'https://www.userlytics.com', 'https://www.respondent.io'] },
+        { m: H, gate: true, t: '4 отчёта готовы' }
+      ]
+    },
+    {
+      title: 'Этап 2 — Кейс в портфолио (недели 3–5)',
+      tasks: [
+        { m: H, t: 'Выбрать реальный продукт (знакомый бизнес, местный сервис или продукт, которым пользуюсь)' },
+        { m: H, t: 'Провести полное исследование: цель → 5 респондентов → находки → рекомендации' },
+        { m: W, t: 'Посмотреть примеры research-кейсов',
+          links: ['https://www.youtube.com/results?search_query=ux+research+case+study+portfolio'] },
+        { m: H, gate: true, t: 'Оформить 1 публичный кейс (Notion или PDF), который не стыдно показать' }
+      ]
+    },
+    {
+      title: 'Этап 3 — Деньги и аутрич (недели 5–8)',
+      tasks: [
+        { m: H, t: 'Собрать оффер малому бизнесу: «юзабилити-тест на 5 пользователях + отчёт с приоритетами», фикс-прайс; цену и способ оплаты указать в оффере сразу' },
+        { m: H, t: 'Отправлять 10 холодных писем в неделю (бизнесы с онлайн-записью или магазином)' },
+        { m: H, t: 'Отправлять 10 откликов в неделю: usability tester, UX research assistant, research ops, junior product researcher, агентства исследований' },
+        { m: H, t: 'Обновить резюме и LinkedIn под research: только реальные кейсы, без выдуманных клиентов' },
+        { m: W, t: 'Разборы собеседований UX-ресёрчеров',
+          links: ['https://www.youtube.com/results?search_query=ux+research+interview+questions'] },
+        { m: H, gate: true, t: '1 оплаченный аудит ИЛИ 3 собеседования' }
+      ]
+    },
+    {
+      title: 'Этап 4 — Роль (месяцы 3–6)',
+      tasks: [
+        { m: H, t: 'Взять бесплатного ментора на ADPList (фильтр «UX Research»), разобрать с ним кейс',
+          links: ['https://adplist.org'] },
+        { m: W, t: 'Вступить в комьюнити ResearchOps',
+          links: ['https://researchops.community'] },
+        { m: H, gate: true, t: 'Роль (full/part-time) или стабильный поток платных аудитов' }
+      ]
+    }
+  ];
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function saveState() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function hostOf(url) {
+    try { return new URL(url).hostname.replace(/^www\./, ''); }
+    catch (e) { return url; }
+  }
+
+  var state = loadState();
+  var totalTasks = STAGES.reduce(function (n, s) { return n + s.tasks.length; }, 0);
+
+  var stagesEl = document.getElementById('stages');
+  var overallBar = document.getElementById('overallBar');
+  var overallFill = document.getElementById('overallFill');
+  var overallPct = document.getElementById('overallPct');
+  var stageRefs = [];
+
+  STAGES.forEach(function (stage, si) {
+    var section = document.createElement('section');
+    section.className = 'stage';
+    section.dataset.collapsed = 'true';
+
+    var bodyId = 'stage-body-' + si;
+
+    var head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'stage-head';
+    head.setAttribute('aria-expanded', 'false');
+    head.setAttribute('aria-controls', bodyId);
+
+    var titleRow = document.createElement('span');
+    titleRow.className = 'stage-title-row';
+    var chev = document.createElement('span');
+    chev.className = 'chev';
+    chev.setAttribute('aria-hidden', 'true');
+    chev.textContent = '▸';
+    var titleEl = document.createElement('span');
+    titleEl.className = 'stage-title';
+    titleEl.textContent = stage.title;
+    titleRow.appendChild(chev);
+    titleRow.appendChild(titleEl);
+
+    var prog = document.createElement('span');
+    prog.className = 'stage-progress';
+    var bar = document.createElement('span');
+    bar.className = 'bar';
+    bar.setAttribute('role', 'progressbar');
+    bar.setAttribute('aria-label', 'Прогресс: ' + stage.title);
+    bar.setAttribute('aria-valuemin', '0');
+    bar.setAttribute('aria-valuemax', '100');
+    bar.setAttribute('aria-valuenow', '0');
+    var fill = document.createElement('span');
+    fill.className = 'fill';
+    bar.appendChild(fill);
+    var pct = document.createElement('span');
+    pct.className = 'pct';
+    pct.textContent = '0%';
+    prog.appendChild(bar);
+    prog.appendChild(pct);
+
+    head.appendChild(titleRow);
+    head.appendChild(prog);
+
+    var body = document.createElement('div');
+    body.className = 'stage-body';
+    body.id = bodyId;
+    var list = document.createElement('ul');
+    list.className = 'tasks';
+
+    var items = [];
+
+    stage.tasks.forEach(function (task, ti) {
+      var id = 's' + si + '-t' + ti;
+      var li = document.createElement('li');
+      li.className = 'task' + (task.gate ? ' gate' : '');
+      li.dataset.mode = task.m;
+
+      var label = document.createElement('label');
+      label.className = 'task-label';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = state[id] === true;
+
+      var text = document.createElement('span');
+      text.className = 'task-text';
+      text.appendChild(document.createTextNode((task.m === W ? '🎥' : '🛠') + ' '));
+      if (task.gate) {
+        var badge = document.createElement('span');
+        badge.className = 'gate-badge';
+        badge.textContent = 'Гейт';
+        text.appendChild(badge);
+      }
+      text.appendChild(document.createTextNode(task.t));
+
+      label.appendChild(cb);
+      label.appendChild(text);
+      li.appendChild(label);
+
+      if (task.gate) {
+        var note = document.createElement('p');
+        note.className = 'gate-note';
+        note.textContent = 'Этап закрывается только этой задачей';
+        li.appendChild(note);
+      }
+
+      if (task.links) {
+        var linksEl = document.createElement('div');
+        linksEl.className = 'task-links';
+        task.links.forEach(function (url) {
+          var a = document.createElement('a');
+          a.className = 'link-chip';
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = hostOf(url) + ' ↗';
+          linksEl.appendChild(a);
+        });
+        li.appendChild(linksEl);
+      }
+
+      cb.addEventListener('change', function () {
+        if (cb.checked) state[id] = true;
+        else delete state[id];
+        saveState();
+        refresh();
+      });
+
+      items.push({ cb: cb, li: li, task: task });
+      list.appendChild(li);
+    });
+
+    body.appendChild(list);
+    section.appendChild(head);
+    section.appendChild(body);
+    stagesEl.appendChild(section);
+
+    var ref = { section: section, head: head, chev: chev, bar: bar, fill: fill, pct: pct, items: items };
+    head.addEventListener('click', function () {
+      setCollapsed(ref, section.dataset.collapsed !== 'true');
+    });
+    stageRefs.push(ref);
+  });
+
+  function setCollapsed(ref, collapsed) {
+    ref.section.dataset.collapsed = collapsed ? 'true' : 'false';
+    ref.head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    ref.chev.textContent = collapsed ? '▸' : '▾';
+  }
+
+  function refresh() {
+    var doneTotal = 0;
+    stageRefs.forEach(function (ref) {
+      var done = 0;
+      ref.items.forEach(function (it) {
+        var on = it.cb.checked;
+        if (on) { done++; doneTotal++; }
+        it.li.classList.toggle('done', on);
+      });
+      var p = ref.items.length ? Math.round(done / ref.items.length * 100) : 0;
+      ref.fill.style.width = p + '%';
+      ref.pct.textContent = p + '%';
+      ref.bar.setAttribute('aria-valuenow', String(p));
+      ref.section.classList.toggle('done', done === ref.items.length);
+    });
+    var op = totalTasks ? Math.round(doneTotal / totalTasks * 100) : 0;
+    overallFill.style.width = op + '%';
+    overallPct.textContent = op + '%';
+    overallBar.setAttribute('aria-valuenow', String(op));
+  }
+
+  function openCurrent() {
+    var current = -1;
+    for (var i = 0; i < stageRefs.length; i++) {
+      var gates = stageRefs[i].items.filter(function (it) { return it.task.gate; });
+      var closed = gates.length > 0 && gates.every(function (it) { return it.cb.checked; });
+      if (!closed) { current = i; break; }
+    }
+    stageRefs.forEach(function (ref, i) {
+      setCollapsed(ref, i !== current);
+    });
+  }
+
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filter-btn'));
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.body.dataset.filter = btn.dataset.filter;
+      filterBtns.forEach(function (b) {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    if (!confirm('Сбросить весь прогресс? Отменить это будет нельзя.')) return;
+    state = {};
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    stageRefs.forEach(function (ref) {
+      ref.items.forEach(function (it) { it.cb.checked = false; });
+    });
+    refresh();
+    openCurrent();
+  });
+
+  refresh();
+  openCurrent();
+})();
+</script>
+</body>
+</html>
