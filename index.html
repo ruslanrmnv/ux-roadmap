@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111417">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
-<title>UX-исследования: от нуля до роли</title>
+<title>UX: от нуля до найма</title>
 <style>
 :root{
   --bg:#111417;
@@ -141,6 +141,8 @@ h1{font-size:27px;line-height:1.2;letter-spacing:-.3px}
   color:var(--accent);text-decoration:none;font-size:14px;
 }
 
+.inline-link{color:var(--accent);text-underline-offset:3px}
+
 .task.gate{
   border:1.5px solid var(--accent);
   border-radius:12px;
@@ -179,8 +181,8 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
 <div class="wrap">
 
   <header class="page-head">
-    <h1>UX-исследования: от нуля до роли</h1>
-    <p class="subtitle">Видео не двигают этапы — двигают руки. Этап закрывается только 🛠-гейтом.</p>
+    <h1>UX: от нуля до найма</h1>
+    <p class="subtitle">Цель — роль junior product/UX-дизайнера с сильным ресёрчем. Кейсы решают, не сертификаты. Этап закрывается только 🛠-гейтом.</p>
   </header>
 
   <div class="topbar">
@@ -210,70 +212,79 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
 (function () {
   'use strict';
 
-  var STORE_KEY = 'uxRoadmap.progress.v1';
+  var STORE_KEY = 'uxRoadmap.progress.v2';
   var W = 'watch', H = 'hands';
 
   var STAGES = [
     {
       title: 'Этап 0 — Проверка «моё / не моё» (2–4 дня)',
       tasks: [
-        { m: W, t: 'Посмотреть демо юзабилити-теста Стива Круга (~25 мин)',
+        { m: W, t: 'Демо юзабилити-теста Стива Круга (~25 мин)',
           links: ['https://www.youtube.com/results?search_query=steve+krug+usability+test+demo'] },
-        { m: W, t: 'Посмотреть одну запись реальной сессии',
+        { m: W, t: 'Одна запись реальной сессии',
           links: ['https://www.youtube.com/results?search_query=usability+testing+session+recording'] },
-        { m: W, t: 'Прочитать NNgroup «UX Research Cheat Sheet»',
-          links: ['https://www.nngroup.com/articles/ux-research-cheat-sheet/'] },
         { m: W, t: 'Домашка: выписать все вопросы модератора + 3 находки «что мешало и почему»' },
-        { m: H, gate: true, t: 'провести 1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)' }
+        { m: H, gate: true, t: '1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)' }
       ]
     },
     {
-      title: 'Этап 1 — База ремесла (недели 1–2)',
+      title: 'Этап 1 — База Figma (недели 1–2)',
       tasks: [
-        { m: W, t: 'Google UX Design (Coursera): пройти курсы 1–2 и курс 4 (Conduct UX Research), дизайн-курсы пропустить',
-          links: ['https://www.coursera.org/professional-certificates/google-ux-design'] },
-        { m: W, t: 'NNgroup на YouTube: плейлисты про usability testing и user interviews',
+        { m: W, t: 'Официальный канал Figma, базовый плейлист для новичков',
+          links: ['https://www.youtube.com/@Figma'] },
+        { m: W, t: '«Figma for beginners»',
+          links: ['https://www.youtube.com/results?search_query=figma+for+beginners+tutorial'] },
+        { m: H, t: 'Скопировать экран №1 хорошего приложения один в один' },
+        { m: H, t: 'Скопировать экран №2 (другой тип: форма, список, карточки)' },
+        { m: H, t: 'Скопировать экран №3, собрав его на auto-layout и компонентах' },
+        { m: H, gate: true, t: '3 копии экранов готовы, третья — на auto-layout' }
+      ]
+    },
+    {
+      title: 'Этап 2 — База дизайна и ресёрча (недели 2–4)',
+      tasks: [
+        { m: W, t: 'Принципы визуала: типографика, отступы, иерархия',
+          links: ['https://www.youtube.com/results?search_query=refactoring+ui+design+tips'] },
+        { m: W, t: 'NNgroup: плейлисты usability testing и user interviews',
           links: ['https://www.youtube.com/@NNgroup'] },
-        { m: W, t: 'Книга: Steve Krug «Don\'t Make Me Think» (конспект или аудио)' },
-        { m: H, t: 'Юзабилити-тест №1 (новый человек, новый сайт) + отчёт на 1 страницу' },
-        { m: H, t: 'Юзабилити-тест №2 + отчёт на 1 страницу' },
+        { m: W, t: 'Steve Krug «Don\'t Make Me Think» (конспект или аудио)' },
+        { m: H, t: 'Юзабилити-тест №2 (новый человек, новый сайт) + отчёт на 1 страницу' },
         { m: H, t: 'Юзабилити-тест №3 + отчёт на 1 страницу' },
-        { m: H, t: 'Интервью на 20 минут + отчёт на 1 страницу' },
-        { m: H, t: 'Зарегистрироваться как участник тестов:',
-          links: ['https://www.usertesting.com', 'https://www.userlytics.com', 'https://www.respondent.io'] },
-        { m: H, gate: true, t: '4 отчёта готовы' }
+        { m: H, gate: true, t: 'редизайн одного реального экрана в Figma + короткое обоснование каждого решения (почему так)' }
       ]
     },
     {
-      title: 'Этап 2 — Кейс в портфолио (недели 3–5)',
+      title: 'Этап 3 — Кейс №1: полный цикл (недели 4–8)',
       tasks: [
-        { m: H, t: 'Выбрать реальный продукт (знакомый бизнес, местный сервис или продукт, которым пользуюсь)' },
-        { m: H, t: 'Провести полное исследование: цель → 5 респондентов → находки → рекомендации' },
-        { m: W, t: 'Посмотреть примеры research-кейсов',
-          links: ['https://www.youtube.com/results?search_query=ux+research+case+study+portfolio'] },
-        { m: H, gate: true, t: 'оформить 1 публичный кейс (Notion или PDF), который не стыдно показать' }
+        { m: H, t: 'Выбрать реальный мини-продукт (знакомый бизнес или локальный сервис)' },
+        { m: H, t: 'Исследование: 3–5 интервью/тестов с живыми людьми' },
+        { m: H, t: 'Прототип в Figma на основе находок' },
+        { m: H, t: 'Юзабилити-тест прототипа → итерация' },
+        { m: W, t: 'Как оформлять кейс',
+          links: ['https://www.youtube.com/results?search_query=ux+case+study+portfolio+breakdown'] },
+        { m: H, gate: true, t: 'кейс оформлен (Notion или Behance) и открыт по ссылке' }
       ]
     },
     {
-      title: 'Этап 3 — Деньги и аутрич (недели 5–8)',
+      title: 'Этап 4 — Кейс №2 и выход на рынок (недели 8–12)',
       tasks: [
-        { m: H, t: 'Собрать оффер малому бизнесу: «юзабилити-тест на 5 пользователях + отчёт с приоритетами», фикс-прайс; цену и способ оплаты указать в оффере сразу' },
-        { m: H, t: 'Отправлять 10 холодных писем в неделю (бизнесы с онлайн-записью или магазином)' },
-        { m: H, t: 'Отправлять 10 откликов в неделю: usability tester, UX research assistant, research ops, junior product researcher, агентства исследований' },
-        { m: H, t: 'Обновить резюме и LinkedIn под research: только реальные кейсы, без выдуманных клиентов' },
-        { m: W, t: 'Разборы собеседований UX-ресёрчеров',
-          links: ['https://www.youtube.com/results?search_query=ux+research+interview+questions'] },
-        { m: H, gate: true, t: '1 оплаченный аудит ИЛИ 3 собеседования' }
+        { m: H, t: 'Кейс №2: редизайн существующего сервиса с обоснованием через исследование' },
+        { m: H, seg: ['Портфолио: Notion или ', { url: 'https://www.behance.net' }, ' — только реальные работы, без выдуманных клиентов'] },
+        { m: H, t: 'Резюме + LinkedIn под junior product/UX designer; заранее определить зарплатную вилку' },
+        { m: H, t: 'Отклики 10–15 в неделю: junior UX/UI, product designer, стажировки — Indeed, LinkedIn, hh.ru, career.habr.com' },
+        { m: W, t: 'Разборы собеседований дизайнеров',
+          links: ['https://www.youtube.com/results?search_query=junior+product+designer+interview+portfolio+review'] },
+        { m: H, gate: true, t: '30 отправленных откликов ИЛИ 3 собеседования' }
       ]
     },
     {
-      title: 'Этап 4 — Роль (месяцы 3–6)',
+      title: 'Этап 5 — Роль (месяцы 3–4+)',
       tasks: [
-        { m: H, t: 'Взять бесплатного ментора на ADPList (фильтр «UX Research»), разобрать с ним кейс',
+        { m: H, t: 'Бесплатный ментор на ADPList (фильтр UX): разбор портфолио и мок-собес',
           links: ['https://adplist.org'] },
-        { m: W, t: 'Вступить в комьюнити ResearchOps',
-          links: ['https://researchops.community'] },
-        { m: H, gate: true, t: 'роль (full/part-time) или стабильный поток платных аудитов' }
+        { m: W, t: 'Фоном, по желанию: Google UX Design на Coursera — для сертификата и добора теории, не для гейтов',
+          links: ['https://www.coursera.org/professional-certificates/google-ux-design'] },
+        { m: H, gate: true, t: 'оффер (full/part-time или стажировка)' }
       ]
     }
   ];
@@ -377,7 +388,23 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
         badge.textContent = 'Гейт';
         text.appendChild(badge);
       }
-      text.appendChild(document.createTextNode(task.t));
+      if (task.seg) {
+        task.seg.forEach(function (part) {
+          if (typeof part === 'string') {
+            text.appendChild(document.createTextNode(part));
+          } else {
+            var ia = document.createElement('a');
+            ia.className = 'inline-link';
+            ia.href = part.url;
+            ia.target = '_blank';
+            ia.rel = 'noopener noreferrer';
+            ia.textContent = hostOf(part.url);
+            text.appendChild(ia);
+          }
+        });
+      } else {
+        text.appendChild(document.createTextNode(task.t));
+      }
 
       label.appendChild(cb);
       label.appendChild(text);
