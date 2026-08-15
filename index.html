@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111417">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
 <title>UX-исследования: от нуля до роли</title>
 <style>
 :root{
@@ -223,7 +224,7 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
         { m: W, t: 'Прочитать NNgroup «UX Research Cheat Sheet»',
           links: ['https://www.nngroup.com/articles/ux-research-cheat-sheet/'] },
         { m: W, t: 'Домашка: выписать все вопросы модератора + 3 находки «что мешало и почему»' },
-        { m: H, gate: true, t: 'Провести 1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)' }
+        { m: H, gate: true, t: 'провести 1 живой мини-тест (человек + сайт + одна задача; молчать, не помогать, записывать точные слова)' }
       ]
     },
     {
@@ -233,7 +234,7 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
           links: ['https://www.coursera.org/professional-certificates/google-ux-design'] },
         { m: W, t: 'NNgroup на YouTube: плейлисты про usability testing и user interviews',
           links: ['https://www.youtube.com/@NNgroup'] },
-        { m: W, t: 'Книга: Steve Krug «Don’t Make Me Think» (конспект или аудио)' },
+        { m: W, t: 'Книга: Steve Krug «Don\'t Make Me Think» (конспект или аудио)' },
         { m: H, t: 'Юзабилити-тест №1 (новый человек, новый сайт) + отчёт на 1 страницу' },
         { m: H, t: 'Юзабилити-тест №2 + отчёт на 1 страницу' },
         { m: H, t: 'Юзабилити-тест №3 + отчёт на 1 страницу' },
@@ -250,7 +251,7 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
         { m: H, t: 'Провести полное исследование: цель → 5 респондентов → находки → рекомендации' },
         { m: W, t: 'Посмотреть примеры research-кейсов',
           links: ['https://www.youtube.com/results?search_query=ux+research+case+study+portfolio'] },
-        { m: H, gate: true, t: 'Оформить 1 публичный кейс (Notion или PDF), который не стыдно показать' }
+        { m: H, gate: true, t: 'оформить 1 публичный кейс (Notion или PDF), который не стыдно показать' }
       ]
     },
     {
@@ -272,13 +273,16 @@ body[data-filter="hands"] .task[data-mode="watch"]{display:none}
           links: ['https://adplist.org'] },
         { m: W, t: 'Вступить в комьюнити ResearchOps',
           links: ['https://researchops.community'] },
-        { m: H, gate: true, t: 'Роль (full/part-time) или стабильный поток платных аудитов' }
+        { m: H, gate: true, t: 'роль (full/part-time) или стабильный поток платных аудитов' }
       ]
     }
   ];
 
   function loadState() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    try {
+      var v = JSON.parse(localStorage.getItem(STORE_KEY));
+      return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+    }
     catch (e) { return {}; }
   }
   function saveState() {
