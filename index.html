@@ -943,43 +943,49 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       note: 'Тот самый эталонный тест из задачи: смотри, как Круг молчит, что спрашивает и как не помогает. Нужны субтитры? В плеере: ⚙️ → Subtitles → Auto-translate → Russian.'
     },
     'figma-start': {
-      yt: 'dXQ7IHkTiMM', lang: 'en', mins: '8',
-      title: 'Figma for beginners: Explore ideas (1/4)',
+      yt: 'zzhSFobLkYw', lang: 'en', mins: '≈2',
+      title: 'Figma Design for beginners (2025) — обзор курса [1/13]',
       by: 'Figma — официальный канал',
-      note: 'Первая часть официального курса для новичков. После просмотра сразу открой Figma и повтори то же руками; части 2–4 — на канале Figma.'
+      note: 'Новый официальный курс 2025 года: 13 коротких уроков на актуальном интерфейсе, за курс собираешь сайт-портфолио. Это обзор — дальше смотри уроки 2–3 из плейлиста «Figma Design for beginners» и повторяй руками. Русские субтитры: ⚙️ → Subtitles → Auto-translate → Russian.'
     },
     'figma-ru': {
-      yt: 'R4QR0sd1jyY', lang: 'ru', mins: '≈40',
-      title: 'Курс по Figma с нуля — урок 1 (на русском)',
-      by: 'бесплатный курс на русском',
-      note: 'Полный русскоязычный урок: интерфейс, фреймы, первые макеты. Смотри с паузами и повторяй руками — просто смотреть почти бесполезно.'
+      yt: '2AIPTvUR_BA', lang: 'ru', mins: '',
+      title: 'Figma с нуля: полный курс (новый интерфейс)',
+      by: 'бесплатный курс на русском · 2025',
+      note: 'Свежий русскоязычный курс, записан на новом интерфейсе Figma. Не смотри залпом: 15–20 минут за подход, с паузами, повторяя каждое действие в своём файле — просто смотреть почти бесполезно.'
     },
     'autolayout': {
       yt: 'TyaGpGDFczw', lang: 'en', mins: '5',
       title: 'Figma in 5: Auto Layout',
       by: 'Figma — официальный канал',
-      note: 'Весь auto-layout за пять минут от самих Figma. Первый раз посмотри целиком, второй — с паузами, повторяя в своём файле.'
+      note: 'Весь auto-layout за пять минут от самих Figma. Ролик записан на прошлом интерфейсе — пара кнопок переехала, но логика ровно та же. Первый раз посмотри целиком, второй — с паузами, повторяя в своём файле.'
     },
     'visual-design': {
-      yt: '7Z9rrryIOC4', lang: 'en', mins: '≈60',
+      yt: '7Z9rrryIOC4', lang: 'en', mins: '≈45',
       title: 'Steve Schoger — Refactoring UI (CSS Day 2019)',
       by: 'CSS Day',
       note: 'Классика: автор Refactoring UI по шагам улучшает реальные экраны — отступы, иерархия, цвет. Выпиши минимум 5 приёмов для своих макетов.'
     },
     'interview-mistakes': {
-      yt: 'yBYd5USasXg', lang: 'en', mins: '6',
-      title: 'Five User Interview Mistakes to Avoid',
+      yt: 'yBYd5USasXg', lang: 'en', mins: '5',
+      title: 'Five User Interview Mistakes to Avoid (in 5 Minutes)',
       by: 'NN/g — Nielsen Norman Group',
-      note: 'Пять ошибок интервьюера за шесть минут: наводящие вопросы, подсказки, спешка. Пересматривай перед своими интервью — как чек-лист.'
+      note: 'Пять ошибок интервьюера за пять минут: наводящие вопросы, подсказки, спешка. Пересматривай перед своими интервью — как чек-лист.'
     },
     'case-review': {
       yt: '85NfqxniGxw', lang: 'en', mins: '≈20',
-      title: 'UX Portfolio Review: First Case Study (Junior)',
+      title: 'UX Portfolio Review: First Case Study (Junior UX Designer)',
       by: 'Dee Scarano',
       note: 'Живой разбор первого кейса начинающего дизайнера: что работает, что выкинуть, как рассказывать историю. Отмечай, что заберёшь в свой кейс.'
+    },
+    'interview-portfolio': {
+      yt: 'w-PoV_sIWos', lang: 'en', mins: '',
+      title: 'Presenting portfolio projects in a design interview',
+      by: 'Femke van Schoonhoven — femke.design',
+      note: 'Дизайн-менеджер (экс-Uber) показывает, как рассказывать о своих проектах на собеседовании: структура истории, что спросят, на чём валятся кандидаты. Выпиши план рассказа о своём кейсе.'
     }
   };
-  var VIDEO_ORDER = ['krug-demo', 'figma-start', 'figma-ru', 'autolayout', 'visual-design', 'interview-mistakes', 'case-review'];
+  var VIDEO_ORDER = ['krug-demo', 'figma-start', 'figma-ru', 'autolayout', 'visual-design', 'interview-mistakes', 'case-review', 'interview-portfolio'];
 
   /* ================================================================
      ТРЕНАЖЁРЫ — детектив по эвристикам: ситуация → какое правило нарушено.
@@ -1210,7 +1216,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
             'Отправляй 2–3 отклика в день с короткой запиской',
             'Веди простой список: куда, когда, что ответили'
           ] },
-        { m: W, t: 'Разборы собеседований дизайнеров', lesson: 'pd-interview', videos: ['case-review'],
+        { m: W, t: 'Разборы собеседований дизайнеров', lesson: 'pd-interview', videos: ['interview-portfolio'],
           links: ['https://www.youtube.com/results?search_query=junior+product+designer+interview+portfolio+review'],
           steps: [
             'Посмотри 2–3 разбора по ссылке',
@@ -1551,7 +1557,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     b.dataset.video = id;
     b.appendChild(el('span', 'ico', '▶'));
     var tt = el('span', 'tt');
-    var kick = seen ? 'Видео засчитано · пересмотреть' : 'Смотри здесь · ' + V.mins + ' мин' + (V.lang === 'en' ? ' · англ.' : '');
+    var kick = seen ? 'Видео засчитано · пересмотреть' : 'Смотри здесь' + (V.mins ? ' · ' + V.mins + ' мин' : '') + (V.lang === 'en' ? ' · англ.' : '');
     tt.appendChild(el('span', 'kicker', kick));
     tt.appendChild(el('span', 'name', V.title));
     b.appendChild(tt);
@@ -1811,7 +1817,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         row.appendChild(el('span', 'ico', '▶'));
         var tt = el('span', 'tt');
         tt.appendChild(el('span', 'name', V.title));
-        tt.appendChild(el('span', 'mins', V.by + ' · ' + V.mins + ' мин' + (V.lang === 'en' ? ' · англ.' : '')));
+        tt.appendChild(el('span', 'mins', V.by + (V.mins ? ' · ' + V.mins + ' мин' : '') + (V.lang === 'en' ? ' · англ.' : '')));
         row.appendChild(tt);
         if (seen) row.appendChild(el('span', 'mark', '✓'));
         vids.appendChild(row);
@@ -2316,7 +2322,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     var h = el('h2', 'player-title', V.title);
     h.id = 'playerTitle';
     playerBody.appendChild(h);
-    playerBody.appendChild(el('p', 'player-meta', V.by + ' · ' + V.mins + ' мин' + (V.lang === 'en' ? ' · на английском' : '')));
+    playerBody.appendChild(el('p', 'player-meta', V.by + (V.mins ? ' · ' + V.mins + ' мин' : '') + (V.lang === 'en' ? ' · на английском' : '')));
     if (V.note) playerBody.appendChild(el('p', 'player-note', V.note));
 
     var seen = !!state.videos[playerId];
