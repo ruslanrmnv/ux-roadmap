@@ -331,12 +331,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   max-width:560px;width:100%;margin:0 auto;padding:10px 16px;
   border-bottom:1px solid var(--border);
 }
-#lessonClose{
+#lessonClose,#playerClose,#gameClose{
   flex:none;width:44px;height:44px;margin-left:-10px;
   display:grid;place-content:center;
   font-size:20px;color:var(--muted);border-radius:10px;
 }
-#lessonClose:active{background:var(--surface2)}
+#lessonClose:active,#playerClose:active,#gameClose:active{background:var(--surface2)}
+.overlay-kicker{flex:1;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .lesson-track{flex:1;height:6px;border-radius:3px;background:var(--ring-track);overflow:hidden}
 .lesson-bar{height:100%;width:0;background:var(--accent);border-radius:3px}
 .lesson-count{flex:none;font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -377,6 +378,75 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (prefers-reduced-motion: no-preference){
   .lesson-bar{transition:width .25s ease}
 }
+
+/* ---------- видео-плеер ---------- */
+.theory-btn.video{background:var(--surface2)}
+.theory-btn.video .ico{color:var(--accent);font-size:17px}
+.video-box{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.video-box iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player-meta{margin-top:10px;font-size:13px;color:var(--muted)}
+.player-title{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-top:14px}
+.player-note{
+  margin-top:14px;padding:12px 14px;
+  background:var(--surface2);border-radius:12px;
+  font-size:14.5px;line-height:1.55;color:var(--muted);
+}
+.player-note b{color:var(--text)}
+.player-ext{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;color:var(--accent);font-size:14px;font-weight:600;text-underline-offset:3px}
+.l-next.done-mark{background:var(--surface2);color:var(--good)}
+
+/* ---------- тренажёры ---------- */
+.fc-card{
+  margin-top:20px;min-height:220px;
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:30px 18px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center;
+}
+.fc-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fc-term{font-size:25px;font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-top:10px}
+.fc-def{margin-top:14px;font-size:15.5px;line-height:1.55;color:var(--muted);text-align:left}
+.fc-row{display:flex;gap:10px;margin-top:18px}
+.fc-row .l-next{flex:1;margin-top:0}
+.l-next.ghosty{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.pairs{display:grid;grid-template-columns:1fr 1.45fr;gap:8px;margin-top:18px}
+.pair-btn{
+  min-height:56px;padding:10px 11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  font-size:13.5px;line-height:1.35;text-align:left;
+}
+.pair-btn.pt{font-weight:700;font-size:14.5px}
+.pair-btn.selected{border-color:var(--accent);background:var(--accent-dim)}
+.pair-btn.matched{opacity:.4;border-color:var(--good)}
+.pair-btn.miss{border-color:var(--bad)}
+.game-note{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.5}
+@media (prefers-reduced-motion: no-preference){
+  .pair-btn.miss{animation:shake .3s ease}
+  @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+}
+
+/* ---------- напоминания ---------- */
+.me-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  margin-top:12px;padding:16px;
+}
+.me-card h3{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rem-row{display:flex;align-items:center;gap:12px;margin-top:12px}
+.rem-text{flex:1;min-width:0;font-size:14.5px;line-height:1.4}
+.rem-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.rem-time{
+  min-height:44px;padding:8px 12px;
+  background:var(--surface2);color:var(--text);
+  border:1px solid var(--border);border-radius:10px;
+  font:inherit;font-variant-numeric:tabular-nums;
+}
+.rem-btn{
+  flex:none;min-height:44px;min-width:76px;padding:10px 14px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:14px;font-weight:700;color:var(--muted);
+}
+.rem-btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rem-note{margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.5}
+.rem-note.alert{color:var(--bad)}
 
 /* ---------- celebration ---------- */
 .celebrate{
@@ -454,6 +524,27 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </div>
   <div class="lesson-scroll">
     <div class="lesson-body wrap" id="lessonBody"></div>
+  </div>
+</div>
+
+<div class="lesson" id="player" role="dialog" aria-modal="true" aria-labelledby="playerTitle" hidden>
+  <div class="lesson-top">
+    <button id="playerClose" type="button" aria-label="Закрыть плеер">✕</button>
+    <span class="overlay-kicker">▶ Видео</span>
+  </div>
+  <div class="lesson-scroll">
+    <div class="lesson-body wrap" id="playerBody"></div>
+  </div>
+</div>
+
+<div class="lesson" id="game" role="dialog" aria-modal="true" aria-labelledby="gameTitle" hidden>
+  <div class="lesson-top">
+    <button id="gameClose" type="button" aria-label="Закрыть тренажёр">✕</button>
+    <div class="lesson-track"><div class="lesson-bar" id="gameBar"></div></div>
+    <span class="lesson-count" id="gameCount"></span>
+  </div>
+  <div class="lesson-scroll">
+    <div class="lesson-body wrap" id="gameBody"></div>
   </div>
 </div>
 
@@ -833,6 +924,93 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   ];
 
   /* ================================================================
+     ВИДЕОТЕКА — конкретные проверенные ролики для встроенного плеера.
+     ================================================================ */
+
+  var VIDEOS = {
+    'krug-demo': {
+      yt: 'QckIzHC99Xc', lang: 'en', mins: '24',
+      title: 'Rocket Surgery Made Easy: Usability Demo',
+      by: 'Steve Krug · Peachpit TV',
+      note: 'Тот самый эталонный тест из задачи: смотри, как Круг молчит, что спрашивает и как не помогает. Нужны субтитры? В плеере: ⚙️ → Subtitles → Auto-translate → Russian.'
+    },
+    'figma-start': {
+      yt: 'dXQ7IHkTiMM', lang: 'en', mins: '8',
+      title: 'Figma for beginners: Explore ideas (1/4)',
+      by: 'Figma — официальный канал',
+      note: 'Первая часть официального курса для новичков. После просмотра сразу открой Figma и повтори то же руками; части 2–4 — на канале Figma.'
+    },
+    'figma-ru': {
+      yt: 'R4QR0sd1jyY', lang: 'ru', mins: '≈40',
+      title: 'Курс по Figma с нуля — урок 1 (на русском)',
+      by: 'бесплатный курс на русском',
+      note: 'Полный русскоязычный урок: интерфейс, фреймы, первые макеты. Смотри с паузами и повторяй руками — просто смотреть почти бесполезно.'
+    },
+    'autolayout': {
+      yt: 'TyaGpGDFczw', lang: 'en', mins: '5',
+      title: 'Figma in 5: Auto Layout',
+      by: 'Figma — официальный канал',
+      note: 'Весь auto-layout за пять минут от самих Figma. Первый раз посмотри целиком, второй — с паузами, повторяя в своём файле.'
+    },
+    'visual-design': {
+      yt: '7Z9rrryIOC4', lang: 'en', mins: '≈60',
+      title: 'Steve Schoger — Refactoring UI (CSS Day 2019)',
+      by: 'CSS Day',
+      note: 'Классика: автор Refactoring UI по шагам улучшает реальные экраны — отступы, иерархия, цвет. Выпиши минимум 5 приёмов для своих макетов.'
+    },
+    'interview-mistakes': {
+      yt: 'yBYd5USasXg', lang: 'en', mins: '6',
+      title: 'Five User Interview Mistakes to Avoid',
+      by: 'NN/g — Nielsen Norman Group',
+      note: 'Пять ошибок интервьюера за шесть минут: наводящие вопросы, подсказки, спешка. Пересматривай перед своими интервью — как чек-лист.'
+    },
+    'case-review': {
+      yt: '85NfqxniGxw', lang: 'en', mins: '≈20',
+      title: 'UX Portfolio Review: First Case Study (Junior)',
+      by: 'Dee Scarano',
+      note: 'Живой разбор первого кейса начинающего дизайнера: что работает, что выкинуть, как рассказывать историю. Отмечай, что заберёшь в свой кейс.'
+    }
+  };
+  var VIDEO_ORDER = ['krug-demo', 'figma-start', 'figma-ru', 'autolayout', 'visual-design', 'interview-mistakes', 'case-review'];
+
+  /* ================================================================
+     ТРЕНАЖЁРЫ — детектив по эвристикам: ситуация → какое правило нарушено.
+     ================================================================ */
+
+  var HEURISTIC_CASES = [
+    { s: 'Жмёшь «Оплатить» — и ничего не происходит: ни крутилки, ни надписи. Через десять секунд страница вдруг сама обновляется.',
+      a: ['Видимость статуса системы', 'Эстетика и минимализм', 'Гибкость и эффективность'], c: 0,
+      why: 'Система обязана сразу показывать, что запрос принят: крутилка, прогресс, «оплата обрабатывается». Молчание читается как поломка.' },
+    { s: 'В банковском приложении кнопка называется «Инициировать транзакцию эквайринга».',
+      a: ['Предотвращение ошибок', 'Соответствие системы и реального мира', 'Помощь и документация'], c: 1,
+      why: 'Интерфейс должен говорить языком пользователя, а не банка: просто «Оплатить». Термины из внутренней кухни — на выброс.' },
+    { s: 'Письмо ушло от случайного нажатия, и отменить отправку нельзя никак.',
+      a: ['Свобода и контроль пользователя', 'Видимость статуса системы', 'Единообразие и стандарты'], c: 0,
+      why: 'У пользователя должен быть «аварийный выход»: отмена, undo, «отправить через 5 секунд». Ошибиться — нормально, застрять в ошибке — нет.' },
+    { s: 'На одном экране кнопка сохранения синяя, справа и называется «Сохранить», на другом — зелёная, слева и называется «Применить».',
+      a: ['Эстетика и минимализм', 'Узнавание вместо припоминания', 'Единообразие и стандарты'], c: 2,
+      why: 'Одинаковые действия должны выглядеть и называться одинаково во всём продукте. Иначе каждый экран приходится изучать заново.' },
+    { s: 'Форма спокойно даёт ввести дату рождения из будущего и сообщает об этом только после отправки всей анкеты.',
+      a: ['Предотвращение ошибок', 'Помощь и документация', 'Свобода и контроль пользователя'], c: 0,
+      why: 'Лучший вариант — не дать ошибке случиться: ограничить календарь, проверять поле сразу. Ловить ошибку в конце — худший.' },
+    { s: 'Чтобы ввести код из СМС, его надо запомнить наизусть: уведомление исчезает, а поле ввода — на другом экране.',
+      a: ['Узнавание вместо припоминания', 'Видимость статуса системы', 'Гибкость и эффективность'], c: 0,
+      why: 'Интерфейс не должен нагружать память: показать код рядом с полем, подставить автоматически. Узнавание всегда легче припоминания.' },
+    { s: 'Курьер каждый день отмечает доставку за шесть тапов по одним и тем же экранам. Сократить путь нельзя: ни шаблонов, ни быстрых действий.',
+      a: ['Эстетика и минимализм', 'Гибкость и эффективность', 'Соответствие системы и реального мира'], c: 1,
+      why: 'Частые действия опытных пользователей должны ускоряться: шаблоны, избранное, быстрые кнопки. Новичку — подробно, профи — коротко.' },
+    { s: 'На главном экране четыре баннера, двенадцать кнопок и бегущая строка. Нужное действие теряется.',
+      a: ['Эстетика и минимализм', 'Помощь и документация', 'Предотвращение ошибок'], c: 0,
+      why: 'Каждый лишний элемент конкурирует с нужным за внимание. Минимализм — не «пустота ради красоты», а защита главного.' },
+    { s: 'При сбое форма показывает: «Ошибка 0x80070057». Что случилось и что делать — непонятно.',
+      a: ['Видимость статуса системы', 'Помощь в распознавании и исправлении ошибок', 'Единообразие и стандарты'], c: 1,
+      why: 'Сообщение об ошибке должно по-человечески объяснить, что случилось и как исправить: «Не хватает суммы на карте — попробуйте другую».' },
+    { s: 'В сложном профессиональном инструменте нет ни подсказок при первом входе, ни справки — разбирайся как хочешь.',
+      a: ['Помощь и документация', 'Свобода и контроль пользователя', 'Узнавание вместо припоминания'], c: 0,
+      why: 'Даже идеальному интерфейсу иногда нужна помощь: онбординг, подсказки по месту, поиск по справке. Она должна быть короткой и находимой.' }
+  ];
+
+  /* ================================================================
      Роадмап: 6 этапов, 31 задача. Тексты задач — из ТЗ, дословно.
      ================================================================ */
 
@@ -840,7 +1018,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     {
       title: 'Этап 0 — Проверка «моё / не моё» (2–4 дня)',
       tasks: [
-        { m: W, t: 'Демо юзабилити-теста Стива Круга (~25 мин)', lesson: 'ut-what',
+        { m: W, t: 'Демо юзабилити-теста Стива Круга (~25 мин)', lesson: 'ut-what', videos: ['krug-demo'],
           links: ['https://www.youtube.com/results?search_query=steve+krug+usability+test+demo'],
           steps: [
             'Открой ссылку и выбери запись демо-теста Круга на ~25 минут',
@@ -872,14 +1050,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     {
       title: 'Этап 1 — База Figma (недели 1–2)',
       tasks: [
-        { m: W, t: 'Официальный канал Figma, базовый плейлист для новичков', lesson: 'figma-ui',
+        { m: W, t: 'Официальный канал Figma, базовый плейлист для новичков', lesson: 'figma-ui', videos: ['figma-start'],
           links: ['https://www.youtube.com/@Figma'],
           steps: [
             'Открой канал и найди плейлист для новичков',
             'Посмотри первые 2–3 урока, повторяя действия в Figma',
             'Создай свой первый файл и сохрани его'
           ] },
-        { m: W, t: '«Figma for beginners»', lesson: 'figma-tools',
+        { m: W, t: '«Figma for beginners»', lesson: 'figma-tools', videos: ['figma-ru'],
           links: ['https://www.youtube.com/results?search_query=figma+for+beginners+tutorial'],
           steps: [
             'Открой ссылку и выбери свежий туториал на 30–60 минут',
@@ -898,7 +1076,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
             'Скопируй его один в один в новом фрейме',
             'Сравни с оригиналом и исправь расхождения'
           ] },
-        { m: H, t: 'Скопировать экран №3, собрав его на auto-layout и компонентах', lesson: 'autolayout',
+        { m: H, t: 'Скопировать экран №3, собрав его на auto-layout и компонентах', lesson: 'autolayout', videos: ['autolayout'],
           steps: [
             'Выбери третий экран и разбери его на повторяющиеся блоки',
             'Собери каждый блок компонентом с auto-layout',
@@ -915,14 +1093,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     {
       title: 'Этап 2 — База дизайна и ресёрча (недели 2–4)',
       tasks: [
-        { m: W, t: 'Принципы визуала: типографика, отступы, иерархия', lesson: 'visual',
+        { m: W, t: 'Принципы визуала: типографика, отступы, иерархия', lesson: 'visual', videos: ['visual-design'],
           links: ['https://www.youtube.com/results?search_query=refactoring+ui+design+tips'],
           steps: [
             'Открой ссылку и выбери 1–2 видео с разборами',
             'Выпиши 5 правил, которые понял: отступы, размеры, контраст',
             'Открой свою копию экрана №3 и примени 2 правила из списка'
           ] },
-        { m: W, t: 'NNgroup: плейлисты usability testing и user interviews', lesson: 'heuristics',
+        { m: W, t: 'NNgroup: плейлисты usability testing и user interviews', lesson: 'heuristics', videos: ['interview-mistakes'],
           links: ['https://www.youtube.com/@NNgroup'],
           steps: [
             'Открой канал и найди плейлисты про usability testing и интервью',
@@ -963,7 +1141,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
             'Выбери один: есть сайт и доступ к владельцу или клиентам',
             'Сформулируй одну фразу: что хочу выяснить'
           ] },
-        { m: H, t: 'Исследование: 3–5 интервью/тестов с живыми людьми', lesson: 'interview',
+        { m: H, t: 'Исследование: 3–5 интервью/тестов с живыми людьми', lesson: 'interview', videos: ['interview-mistakes'],
           steps: [
             'Составь список вопросов или задач для теста',
             'Найди 3–5 респондентов и договорись о времени',
@@ -982,7 +1160,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
             'Выпиши, где они спотыкаются',
             'Внеси правки — это и есть итерация'
           ] },
-        { m: W, t: 'Как оформлять кейс', lesson: 'case',
+        { m: W, t: 'Как оформлять кейс', lesson: 'case', videos: ['case-review'],
           links: ['https://www.youtube.com/results?search_query=ux+case+study+portfolio+breakdown'],
           steps: [
             'Посмотри 2–3 разбора кейсов по ссылке',
@@ -1024,7 +1202,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
             'Отправляй 2–3 отклика в день с короткой запиской',
             'Веди простой список: куда, когда, что ответили'
           ] },
-        { m: W, t: 'Разборы собеседований дизайнеров', lesson: 'pd-interview',
+        { m: W, t: 'Разборы собеседований дизайнеров', lesson: 'pd-interview', videos: ['case-review'],
           links: ['https://www.youtube.com/results?search_query=junior+product+designer+interview+portfolio+review'],
           steps: [
             'Посмотри 2–3 разбора по ссылке',
@@ -1065,14 +1243,30 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   /* ---------- state ---------- */
 
+  function blankState() {
+    return {
+      steps: {}, theory: {}, videos: {},
+      games: { rounds: 0, sprintBest: 0 },
+      streak: { count: 0, last: '' }, activity: {}, focusTask: '',
+      reminder: { on: false, time: '20:00', fired: '' }
+    };
+  }
   function loadState() {
     try {
       var v = JSON.parse(localStorage.getItem(STORE_KEY));
       if (v && typeof v === 'object' && !Array.isArray(v)) {
-        var out = { steps: {}, theory: {}, streak: { count: 0, last: '' }, activity: {}, focusTask: '' };
+        var out = blankState();
         if (v.steps && typeof v.steps === 'object' && !Array.isArray(v.steps)) out.steps = v.steps;
         if (v.theory && typeof v.theory === 'object' && !Array.isArray(v.theory)) {
           Object.keys(v.theory).forEach(function (k) { if (v.theory[k] && LESSONS[k]) out.theory[k] = true; });
+        }
+        if (v.videos && typeof v.videos === 'object' && !Array.isArray(v.videos)) {
+          Object.keys(v.videos).forEach(function (k) { if (v.videos[k] && VIDEOS[k]) out.videos[k] = true; });
+        }
+        if (v.games && typeof v.games === 'object' && !Array.isArray(v.games)) {
+          var rr = Number(v.games.rounds), sb = Number(v.games.sprintBest);
+          if (isFinite(rr) && rr > 0) out.games.rounds = Math.floor(rr);
+          if (isFinite(sb) && sb > 0) out.games.sprintBest = Math.min(10, Math.floor(sb));
         }
         if (v.streak && typeof v.streak === 'object' && !Array.isArray(v.streak)) {
           out.streak.count = typeof v.streak.count === 'number' && isFinite(v.streak.count) ? v.streak.count : 0;
@@ -1085,10 +1279,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           });
         }
         if (typeof v.focusTask === 'string') out.focusTask = v.focusTask;
+        if (v.reminder && typeof v.reminder === 'object' && !Array.isArray(v.reminder)) {
+          out.reminder.on = v.reminder.on === true;
+          if (typeof v.reminder.time === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(v.reminder.time)) out.reminder.time = v.reminder.time;
+          if (typeof v.reminder.fired === 'string') out.reminder.fired = v.reminder.fired;
+        }
         return out;
       }
     } catch (e) {}
-    return { steps: {}, theory: {}, streak: { count: 0, last: '' }, activity: {}, focusTask: '' };
+    return blankState();
   }
   var storageOk = true;
   function markStorageBroken() {
@@ -1219,6 +1418,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     Object.keys(LESSONS).forEach(function (k) { if (state.theory[k]) n++; });
     return n;
   }
+  function videosWatched() {
+    var n = 0;
+    VIDEO_ORDER.forEach(function (k) { if (state.videos[k]) n++; });
+    return n;
+  }
 
   /* ---------- streak ---------- */
 
@@ -1330,6 +1534,22 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     b.appendChild(el('span', 'go', done ? '✓' : '→'));
     return b;
   }
+  function videoButton(id) {
+    var V = VIDEOS[id];
+    if (!V) return null;
+    var seen = !!state.videos[id];
+    var b = el('button', 'theory-btn video' + (seen ? ' done' : ''));
+    b.type = 'button';
+    b.dataset.video = id;
+    b.appendChild(el('span', 'ico', '▶'));
+    var tt = el('span', 'tt');
+    var kick = seen ? 'Видео засчитано · пересмотреть' : 'Смотри здесь · ' + V.mins + ' мин' + (V.lang === 'en' ? ' · англ.' : '');
+    tt.appendChild(el('span', 'kicker', kick));
+    tt.appendChild(el('span', 'name', V.title));
+    b.appendChild(tt);
+    b.appendChild(el('span', 'go', seen ? '✓' : '→'));
+    return b;
+  }
 
   function renderNow() {
     viewNow.textContent = '';
@@ -1372,6 +1592,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
     var tb = theoryButton(task);
     if (tb) card.appendChild(tb);
+    (task.videos || []).forEach(function (vid) {
+      var vb = videoButton(vid);
+      if (vb) card.appendChild(vb);
+    });
 
     var list = el('ul', 'steps');
     var firstOpen = -1;
@@ -1525,6 +1749,26 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     prog.appendChild(el('span', 't', 'Пройдено ' + done + ' из ' + total + ' уроков'));
     viewBase.appendChild(prog);
 
+    var games = el('section', 'base-group');
+    games.appendChild(el('h3', '', 'Тренажёры'));
+    [
+      ['cards', '🃏', 'Карточки терминов', '10 случайных · знал / ещё раз'],
+      ['pairs', '🧩', 'Пары', 'собери термин + определение'],
+      ['sprint', '⚡', 'Спринт по урокам', '10 вопросов из всех уроков' + (state.games.sprintBest ? ' · рекорд ' + state.games.sprintBest + '/10' : '')],
+      ['detective', '🕵️', 'Детектив по эвристикам', 'найди, какое правило нарушено']
+    ].forEach(function (g) {
+      var row = el('button', 'lrow');
+      row.type = 'button';
+      row.dataset.game = g[0];
+      row.appendChild(el('span', 'ico', g[1]));
+      var tt = el('span', 'tt');
+      tt.appendChild(el('span', 'name', g[2]));
+      tt.appendChild(el('span', 'mins', g[3]));
+      row.appendChild(tt);
+      games.appendChild(row);
+    });
+    viewBase.appendChild(games);
+
     BASE_GROUPS.forEach(function (g) {
       var box = el('section', 'base-group');
       box.appendChild(el('h3', '', g.title));
@@ -1546,6 +1790,27 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       viewBase.appendChild(box);
     });
 
+    if (VIDEO_ORDER.length) {
+      var vids = el('section', 'base-group');
+      vids.appendChild(el('h3', '', 'Видеотека'));
+      VIDEO_ORDER.forEach(function (id) {
+        var V = VIDEOS[id];
+        if (!V) return;
+        var seen = !!state.videos[id];
+        var row = el('button', 'lrow' + (seen ? ' done' : ''));
+        row.type = 'button';
+        row.dataset.video = id;
+        row.appendChild(el('span', 'ico', '▶'));
+        var tt = el('span', 'tt');
+        tt.appendChild(el('span', 'name', V.title));
+        tt.appendChild(el('span', 'mins', V.by + ' · ' + V.mins + ' мин' + (V.lang === 'en' ? ' · англ.' : '')));
+        row.appendChild(tt);
+        if (seen) row.appendChild(el('span', 'mark', '✓'));
+        vids.appendChild(row);
+      });
+      viewBase.appendChild(vids);
+    }
+
     var gl = el('section', 'base-group');
     gl.appendChild(el('h3', '', 'Словарь'));
     GLOSSARY.forEach(function (term, i) {
@@ -1561,6 +1826,142 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       gl.appendChild(wrap);
     });
     viewBase.appendChild(gl);
+  }
+
+  /* ---------- напоминания о стрике ---------- */
+
+  var remHint = ''; /* одноразовое пояснение после попытки включить */
+
+  function notifySupported() { return 'Notification' in window; }
+
+  function reminderCard() {
+    var card = el('section', 'me-card');
+    card.appendChild(el('h3', '', 'Напоминание о стрике'));
+
+    if (notifySupported()) {
+      var row = el('div', 'rem-row');
+      var txt = el('div', 'rem-text');
+      txt.appendChild(document.createTextNode('Напомнить, если за день нет ни шага'));
+      txt.appendChild(el('span', 'rem-sub', state.reminder.on
+        ? 'Включено. Сработает, пока вкладка с сайтом открыта — можно в фоне.'
+        : 'Пуш в браузере в выбранное время.'));
+      row.appendChild(txt);
+      var toggle = el('button', 'rem-btn' + (state.reminder.on ? ' on' : ''), state.reminder.on ? 'Вкл' : 'Выкл');
+      toggle.type = 'button';
+      toggle.id = 'remToggle';
+      toggle.setAttribute('aria-pressed', state.reminder.on ? 'true' : 'false');
+      toggle.setAttribute('aria-label', 'Напоминание в браузере');
+      row.appendChild(toggle);
+      card.appendChild(row);
+
+      var trow = el('div', 'rem-row');
+      var ttxt = el('div', 'rem-text');
+      ttxt.appendChild(document.createTextNode('Время напоминания'));
+      trow.appendChild(ttxt);
+      var time = document.createElement('input');
+      time.type = 'time';
+      time.className = 'rem-time';
+      time.id = 'remTime';
+      time.setAttribute('aria-label', 'Время напоминания');
+      time.value = state.reminder.time;
+      trow.appendChild(time);
+      card.appendChild(trow);
+    }
+
+    var crow = el('div', 'rem-row');
+    var ctxt = el('div', 'rem-text');
+    ctxt.appendChild(document.createTextNode('📅 Напоминание в календарь'));
+    ctxt.appendChild(el('span', 'rem-sub', 'работает, даже когда сайт закрыт'));
+    crow.appendChild(ctxt);
+    var cbtn = el('button', 'rem-btn', 'Скачать');
+    cbtn.type = 'button';
+    cbtn.id = 'remCal';
+    crow.appendChild(cbtn);
+    card.appendChild(crow);
+
+    if (remHint) {
+      card.appendChild(el('p', 'rem-note alert', remHint));
+    } else if (!notifySupported()) {
+      card.appendChild(el('p', 'rem-note', 'Этот браузер не показывает уведомления сайтов (так на iPhone). Используй вариант с календарём — ежедневное событие с напоминанием.'));
+    }
+    return card;
+  }
+
+  function fireReminderNotification(title, body) {
+    /* на части мобильных браузеров конструктор Notification запрещён — бросит исключение */
+    var n = new Notification(title, { body: body, tag: 'ux-roadmap-daily' });
+    n.onclick = function () { try { window.focus(); } catch (e) {} this.close(); };
+  }
+  function checkReminder() {
+    if (!state.reminder.on) return;
+    if (!notifySupported() || Notification.permission !== 'granted') return;
+    var today = todayKey();
+    if (state.reminder.fired >= today) return; /* уже напоминали (>= — защита от перевода часов) */
+    if (state.activity[today]) return;         /* сегодня уже занимался — не дёргаем */
+    var now = new Date();
+    var hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    if (hm < state.reminder.time) return;
+    state.reminder.fired = today;
+    saveState();
+    try {
+      fireReminderNotification('UX: от нуля до найма', streakAtRisk()
+        ? 'Стрик 🔥 ' + currentStreak() + ' сгорит сегодня. Один шаг — и он продлится.'
+        : 'Один маленький шаг сегодня. Карточка уже ждёт.');
+    } catch (e) {}
+  }
+  function reminderICS() {
+    var hmParts = state.reminder.time.split(':');
+    var now = new Date();
+    var start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), Number(hmParts[0]), Number(hmParts[1]));
+    if (start <= now) start.setDate(start.getDate() + 1);
+    function d2(n) { return String(n).padStart(2, '0'); }
+    var dt = start.getFullYear() + d2(start.getMonth() + 1) + d2(start.getDate()) + 'T' + d2(start.getHours()) + d2(start.getMinutes()) + '00';
+    var stamp = now.getUTCFullYear() + d2(now.getUTCMonth() + 1) + d2(now.getUTCDate()) + 'T' + d2(now.getUTCHours()) + d2(now.getUTCMinutes()) + '00Z';
+    return [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//ux-roadmap//RU',
+      'BEGIN:VEVENT',
+      'UID:ux-roadmap-daily-' + dt + '@ux-roadmap',
+      'DTSTAMP:' + stamp,
+      'DTSTART:' + dt,
+      'DURATION:PT15M',
+      'RRULE:FREQ=DAILY',
+      'SUMMARY:UX-роадмап: один шаг сегодня 🔥',
+      'DESCRIPTION:Открой сайт и сделай один шаг или урок — стрик продлится.\\n' + location.href,
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:PT0S', 'DESCRIPTION:UX-роадмап: один шаг сегодня', 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR'
+    ].join('\r\n');
+  }
+  function downloadICS() {
+    var blob = new Blob([reminderICS()], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'ux-roadmap-reminder.ics';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+  }
+  function enableReminder() {
+    Notification.requestPermission().then(function (perm) {
+      if (perm === 'granted') {
+        try {
+          fireReminderNotification('Напоминания включены', 'Так будет выглядеть ежедневное напоминание в ' + state.reminder.time + '.');
+          state.reminder.on = true;
+          remHint = '';
+        } catch (e) {
+          state.reminder.on = false;
+          remHint = 'Этот браузер не даёт сайту показывать такие уведомления. Надёжнее вариант с календарём ниже.';
+        }
+      } else {
+        state.reminder.on = false;
+        remHint = perm === 'denied'
+          ? 'Браузер заблокировал уведомления для этого сайта. Разреши их в настройках браузера или используй календарь.'
+          : 'Без разрешения браузера напоминание не заработает. Попробуй ещё раз или используй календарь.';
+      }
+      saveState();
+      if (activeTab === 'me') renderMe();
+    });
   }
 
   function renderMe() {
@@ -1585,11 +1986,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     hero.appendChild(el('div', 'dots-label', 'последние 14 дней'));
     viewMe.appendChild(hero);
 
+    viewMe.appendChild(reminderCard());
+
     var stats = el('div', 'stats');
     [
       [t.stepsDone, 'шагов сделано'],
       [t.tasksDone, 'задач закрыто'],
       [lessonsDone() + ' / ' + lessonCount(), 'уроков теории'],
+      [videosWatched() + ' / ' + VIDEO_ORDER.length, 'видео посмотрено'],
+      [state.games.rounds, 'раундов в тренажёрах'],
       [t.gatesDone + ' / ' + STAGES.length, 'гейтов']
     ].forEach(function (s) {
       var box = el('div', 'stat');
@@ -1630,40 +2035,67 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     window.scrollTo(0, 0);
   }
 
-  /* ---------- lesson player ---------- */
+  /* ---------- оверлеи: урок / плеер / тренажёр ---------- */
 
   var lessonEl = document.getElementById('lesson');
   var lessonBody = document.getElementById('lessonBody');
   var lessonScroll = lessonEl.querySelector('.lesson-scroll');
+  var playerEl = document.getElementById('player');
+  var playerBody = document.getElementById('playerBody');
+  var playerScroll = playerEl.querySelector('.lesson-scroll');
+  var gameEl = document.getElementById('game');
+  var gameBody = document.getElementById('gameBody');
+  var gameScroll = gameEl.querySelector('.lesson-scroll');
   var lessonId = '';
   var lessonPos = 0;
   var lessonAnswered = false;
-  var lessonPushed = false;
+  var overlayPushed = false;
 
-  function openLesson(id) {
-    if (!LESSONS[id]) return;
-    if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; justCompleted = ''; }
-    lessonId = id;
-    lessonPos = 0;
-    lessonAnswered = false;
-    lessonEl.hidden = false;
-    setBehindInert(true);
-    try { history.pushState({ lesson: id }, ''); lessonPushed = true; }
-    catch (e) { lessonPushed = false; }
-    renderLesson();
+  function topOverlay() {
+    if (!lessonEl.hidden) return 'lesson';
+    if (!playerEl.hidden) return 'player';
+    if (!gameEl.hidden) return 'game';
+    return '';
   }
-  function closeLesson() {
-    if (lessonEl.hidden) return;
-    lessonEl.hidden = true;
-    lessonId = '';
+  function openOverlay(node) {
+    if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; justCompleted = ''; }
+    node.hidden = false;
+    setBehindInert(true);
+    try { history.pushState({ overlay: 1 }, ''); overlayPushed = true; }
+    catch (e) { overlayPushed = false; }
+  }
+  function closeOverlayNode(node) {
+    node.hidden = true;
     setBehindInert(false);
     renderActive();
     var tab = document.querySelector('.tab[aria-selected="true"]');
     if (tab) tab.focus();
   }
-  function requestCloseLesson() {
-    if (lessonPushed) { lessonPushed = false; history.back(); }
-    else closeLesson();
+  function closeTopOverlay() {
+    var o = topOverlay();
+    if (o === 'lesson') closeLesson();
+    else if (o === 'player') closePlayer();
+    else if (o === 'game') closeGame();
+  }
+  function requestCloseOverlay() {
+    if (overlayPushed) { overlayPushed = false; history.back(); }
+    else closeTopOverlay();
+  }
+
+  /* ---------- урок ---------- */
+
+  function openLesson(id) {
+    if (!LESSONS[id]) return;
+    lessonId = id;
+    lessonPos = 0;
+    lessonAnswered = false;
+    openOverlay(lessonEl);
+    renderLesson();
+  }
+  function closeLesson() {
+    if (lessonEl.hidden) return;
+    lessonId = '';
+    closeOverlayNode(lessonEl);
   }
 
   function renderLesson() {
@@ -1746,7 +2178,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     }
     var fin = e.target.closest('[data-lesson-finish]');
     if (fin) {
-      requestCloseLesson();
+      requestCloseOverlay();
       return;
     }
     var opt = e.target.closest('[data-quiz-opt]');
@@ -1773,9 +2205,332 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     }
   });
 
-  document.getElementById('lessonClose').addEventListener('click', requestCloseLesson);
+  document.getElementById('lessonClose').addEventListener('click', requestCloseOverlay);
+  document.getElementById('playerClose').addEventListener('click', requestCloseOverlay);
+  document.getElementById('gameClose').addEventListener('click', requestCloseOverlay);
   window.addEventListener('popstate', function () {
-    if (!lessonEl.hidden) { lessonPushed = false; closeLesson(); }
+    if (topOverlay()) { overlayPushed = false; closeTopOverlay(); }
+  });
+
+  /* ---------- видео-плеер ---------- */
+
+  var playerId = '';
+
+  function openPlayer(id) {
+    if (!VIDEOS[id]) return;
+    playerId = id;
+    openOverlay(playerEl);
+    renderPlayer();
+  }
+  function closePlayer() {
+    if (playerEl.hidden) return;
+    playerId = '';
+    playerBody.textContent = ''; /* убирает iframe — останавливает воспроизведение */
+    closeOverlayNode(playerEl);
+  }
+  function renderPlayer() {
+    var V = VIDEOS[playerId];
+    if (!V) return;
+    playerBody.textContent = '';
+    playerScroll.scrollTop = 0;
+
+    var box = el('div', 'video-box');
+    var frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + V.yt + '?rel=0';
+    frame.title = V.title;
+    frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    frame.setAttribute('allowfullscreen', '');
+    box.appendChild(frame);
+    playerBody.appendChild(box);
+
+    var h = el('h2', 'player-title', V.title);
+    h.id = 'playerTitle';
+    playerBody.appendChild(h);
+    playerBody.appendChild(el('p', 'player-meta', V.by + ' · ' + V.mins + ' мин' + (V.lang === 'en' ? ' · на английском' : '')));
+    if (V.note) playerBody.appendChild(el('p', 'player-note', V.note));
+
+    var seen = !!state.videos[playerId];
+    var done = el('button', 'l-next' + (seen ? ' done-mark' : ''), seen ? '✓ Засчитано' : '✓ Досмотрел — засчитать');
+    done.type = 'button';
+    done.id = 'playerDoneBtn';
+    done.disabled = seen;
+    playerBody.appendChild(done);
+
+    var ext = el('a', 'player-ext', 'Не играет? Открыть на YouTube ↗');
+    ext.href = 'https://www.youtube.com/watch?v=' + V.yt;
+    ext.target = '_blank'; ext.rel = 'noopener noreferrer';
+    playerBody.appendChild(ext);
+  }
+
+  playerBody.addEventListener('click', function (e) {
+    if (e.target.closest('#playerDoneBtn') && playerId && !state.videos[playerId]) {
+      state.videos[playerId] = true;
+      bumpStreak();
+      saveState();
+      renderTopbar();
+      renderPlayer();
+    }
+  });
+
+  /* ---------- тренажёры ---------- */
+
+  var SPRINT_POOL = [];
+  Object.keys(LESSONS).forEach(function (k) {
+    LESSONS[k].quiz.forEach(function (q) {
+      SPRINT_POOL.push({ q: q.q, a: q.a, c: q.c, why: q.why, from: LESSONS[k].title });
+    });
+  });
+
+  var game = null;
+
+  function shuffled(n) {
+    var arr = [];
+    for (var i = 0; i < n; i++) arr.push(i);
+    for (i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+  function sample(list, k) {
+    return shuffled(list.length).slice(0, Math.min(k, list.length)).map(function (i) { return list[i]; });
+  }
+  function firstSentence(text) {
+    var m = text.indexOf('. ');
+    return m === -1 ? text : text.slice(0, m + 1);
+  }
+
+  function newGame(kind) {
+    if (kind === 'cards') {
+      return { kind: 'cards', queue: sample(GLOSSARY, 10), flipped: false, known: 0, total: 10, repeats: 0, over: false };
+    }
+    if (kind === 'pairs') {
+      var pairs = sample(GLOSSARY, 5);
+      return { kind: 'pairs', pairs: pairs, defOrder: shuffled(pairs.length), matched: {}, sel: -1, mistakes: 0, over: false };
+    }
+    if (kind === 'sprint') {
+      return { kind: 'sprint', qs: sample(SPRINT_POOL, 10), i: 0, score: 0, answered: false, over: false };
+    }
+    return { kind: 'detective', qs: sample(HEURISTIC_CASES.map(function (h) { return { q: h.s, a: h.a, c: h.c, why: h.why }; }), 5), i: 0, score: 0, answered: false, over: false };
+  }
+  function openGame(kind) {
+    game = newGame(kind);
+    openOverlay(gameEl);
+    renderGame();
+  }
+  function closeGame() {
+    if (gameEl.hidden) return;
+    game = null;
+    gameBody.textContent = '';
+    closeOverlayNode(gameEl);
+  }
+  function finishRound() {
+    game.over = true;
+    state.games.rounds++;
+    if (game.kind === 'sprint' && game.score > state.games.sprintBest) state.games.sprintBest = game.score;
+    bumpStreak();
+    saveState();
+    renderTopbar();
+  }
+  function gameProgress(part, total, label) {
+    document.getElementById('gameBar').style.width = Math.round(part / total * 100) + '%';
+    document.getElementById('gameCount').textContent = label;
+  }
+  function replayButtons(fin, again) {
+    var row = el('div', 'fc-row');
+    var more = el('button', 'l-next ghosty', again);
+    more.type = 'button';
+    more.dataset.gameReplay = '1';
+    row.appendChild(more);
+    var ok = el('button', 'l-next', 'Готово');
+    ok.type = 'button';
+    ok.dataset.gameFinish = '1';
+    row.appendChild(ok);
+    fin.appendChild(row);
+    ok.focus();
+  }
+
+  function renderGame() {
+    if (!game) return;
+    gameBody.textContent = '';
+    gameScroll.scrollTop = 0;
+
+    if (game.over) {
+      gameProgress(1, 1, '🎉');
+      var fin = el('div', 'l-final');
+      fin.appendChild(el('div', 'big', '🎉'));
+      var fh = el('h2', '', game.kind === 'sprint' || game.kind === 'detective'
+        ? game.score + ' из ' + game.qs.length
+        : 'Раунд пройден');
+      fh.id = 'gameTitle';
+      fin.appendChild(fh);
+      var sub;
+      if (game.kind === 'cards') sub = game.repeats ? 'Все 10 терминов разобраны. Повторов понадобилось: ' + game.repeats + '.' : 'Все 10 терминов разобраны с первого захода. Сильно.';
+      else if (game.kind === 'pairs') sub = game.mistakes ? 'Все пары собраны. Промахов: ' + game.mistakes + '.' : 'Все пары собраны без единого промаха.';
+      else if (game.kind === 'sprint') sub = game.score === game.qs.length ? 'Идеальный спринт! Рекорд: ' + state.games.sprintBest + '/10.' : 'Рекорд: ' + state.games.sprintBest + '/10. Ошибки — это тоже повторение.';
+      else sub = game.score === game.qs.length ? 'Все нарушения найдены. Нильсен бы гордился.' : 'Разборы ошибок — лучший учебник. Попробуй ещё раунд.';
+      fin.appendChild(el('p', '', sub));
+      replayButtons(fin, 'Ещё раунд');
+      gameBody.appendChild(fin);
+      return;
+    }
+
+    if (game.kind === 'cards') {
+      gameProgress(game.known, game.total, game.known + ' / ' + game.total);
+      var term = game.queue[0];
+      gameBody.appendChild(el('div', 'l-eyebrow', '🃏 Карточки терминов'));
+      var card = el('div', 'fc-card');
+      card.appendChild(el('div', 'fc-kicker', game.flipped ? 'Определение' : 'Что это?'));
+      var th = el('div', 'fc-term', term.t);
+      th.id = 'gameTitle';
+      card.appendChild(th);
+      if (game.flipped) card.appendChild(el('p', 'fc-def', term.d));
+      gameBody.appendChild(card);
+      if (!game.flipped) {
+        var flip = el('button', 'l-next', 'Показать определение');
+        flip.type = 'button';
+        flip.dataset.gameFlip = '1';
+        gameBody.appendChild(flip);
+        flip.focus();
+      } else {
+        var row = el('div', 'fc-row');
+        var no = el('button', 'l-next ghosty', '🔁 Ещё раз');
+        no.type = 'button';
+        no.dataset.gameAgain = '1';
+        row.appendChild(no);
+        var yes = el('button', 'l-next', '👍 Знал');
+        yes.type = 'button';
+        yes.dataset.gameKnew = '1';
+        row.appendChild(yes);
+        gameBody.appendChild(row);
+        yes.focus();
+      }
+      gameBody.appendChild(el('p', 'game-note', 'Вспомни своими словами, потом сверься. «Ещё раз» вернёт карточку в конец колоды.'));
+      return;
+    }
+
+    if (game.kind === 'pairs') {
+      var matchedN = Object.keys(game.matched).length;
+      gameProgress(matchedN, game.pairs.length, matchedN + ' / ' + game.pairs.length);
+      gameBody.appendChild(el('div', 'l-eyebrow', '🧩 Пары'));
+      var gh = el('h2', 'quiz-q', 'Соедини термин с определением');
+      gh.id = 'gameTitle';
+      gameBody.appendChild(gh);
+      var grid = el('div', 'pairs');
+      game.pairs.forEach(function (p, i) {
+        var tbtn = el('button', 'pair-btn pt' + (game.matched[i] ? ' matched' : '') + (game.sel === i ? ' selected' : ''), p.t);
+        tbtn.type = 'button';
+        tbtn.dataset.pairTerm = i;
+        tbtn.disabled = !!game.matched[i];
+        grid.appendChild(tbtn);
+        var di = game.defOrder[i];
+        var dbtn = el('button', 'pair-btn' + (game.matched[di] ? ' matched' : ''), firstSentence(game.pairs[di].d));
+        dbtn.type = 'button';
+        dbtn.dataset.pairDef = di;
+        dbtn.disabled = !!game.matched[di];
+        grid.appendChild(dbtn);
+      });
+      gameBody.appendChild(grid);
+      gameBody.appendChild(el('p', 'game-note', game.sel === -1 ? 'Сначала выбери термин слева, потом его определение справа.' : 'Теперь найди определение справа.'));
+      return;
+    }
+
+    /* спринт и детектив — общий квиз */
+    var q = game.qs[game.i];
+    gameProgress(game.i + (game.answered ? 1 : 0), game.qs.length, (game.i + 1) + ' / ' + game.qs.length);
+    gameBody.appendChild(el('div', 'l-eyebrow', game.kind === 'sprint' ? '⚡ Спринт · счёт ' + game.score : '🕵️ Детектив · какое правило нарушено?'));
+    var qh = el('h2', 'quiz-q', q.q);
+    qh.id = 'gameTitle';
+    gameBody.appendChild(qh);
+    var opts = el('ul', 'quiz-opts');
+    q.a.forEach(function (optText, oi) {
+      var li = el('li');
+      var b = el('button', 'quiz-opt', optText);
+      b.type = 'button';
+      b.dataset.gameOpt = oi;
+      li.appendChild(b);
+      opts.appendChild(li);
+    });
+    gameBody.appendChild(opts);
+  }
+
+  gameBody.addEventListener('click', function (e) {
+    if (!game) return;
+    if (e.target.closest('[data-game-flip]')) { game.flipped = true; renderGame(); return; }
+    if (e.target.closest('[data-game-knew]')) {
+      game.queue.shift();
+      game.known++;
+      game.flipped = false;
+      if (!game.queue.length) finishRound();
+      renderGame();
+      return;
+    }
+    if (e.target.closest('[data-game-again]')) {
+      game.queue.push(game.queue.shift());
+      game.repeats++;
+      game.flipped = false;
+      renderGame();
+      return;
+    }
+    var pt = e.target.closest('[data-pair-term]');
+    if (pt) { game.sel = Number(pt.dataset.pairTerm); renderGame(); return; }
+    var pd = e.target.closest('[data-pair-def]');
+    if (pd) {
+      if (game.sel === -1) return;
+      var di = Number(pd.dataset.pairDef);
+      if (di === game.sel) {
+        game.matched[di] = true;
+        game.sel = -1;
+        if (Object.keys(game.matched).length === game.pairs.length) finishRound();
+        renderGame();
+      } else {
+        game.mistakes++;
+        var selBtn = gameBody.querySelector('[data-pair-term="' + game.sel + '"]');
+        game.sel = -1;
+        [pd, selBtn].forEach(function (b) {
+          if (!b) return;
+          b.classList.remove('selected');
+          b.classList.add('miss');
+          setTimeout(function () { b.classList.remove('miss'); }, 400);
+        });
+      }
+      return;
+    }
+    var opt = e.target.closest('[data-game-opt]');
+    if (opt && !game.answered) {
+      game.answered = true;
+      var q = game.qs[game.i];
+      var chosen = Number(opt.dataset.gameOpt);
+      if (chosen === q.c) game.score++;
+      gameBody.querySelectorAll('.quiz-opt').forEach(function (b, bi) {
+        b.disabled = true;
+        if (bi === q.c) b.classList.add('right');
+        else if (bi === chosen) b.classList.add('wrong');
+      });
+      var why = el('div', 'quiz-why');
+      why.appendChild(el('b', '', chosen === q.c ? 'Верно. ' : 'Не совсем. '));
+      why.appendChild(document.createTextNode(q.why));
+      gameBody.appendChild(why);
+      var next = el('button', 'l-next', game.i === game.qs.length - 1 ? 'Результат →' : 'Дальше');
+      next.type = 'button';
+      next.dataset.gameNext = '1';
+      gameBody.appendChild(next);
+      next.focus();
+      return;
+    }
+    if (e.target.closest('[data-game-next]')) {
+      game.i++;
+      game.answered = false;
+      if (game.i >= game.qs.length) finishRound();
+      renderGame();
+      return;
+    }
+    if (e.target.closest('[data-game-replay]')) {
+      game = newGame(game.kind);
+      renderGame();
+      return;
+    }
+    if (e.target.closest('[data-game-finish]')) requestCloseOverlay();
   });
 
   /* ---------- celebration ---------- */
@@ -1817,6 +2572,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   viewNow.addEventListener('click', function (e) {
     var lb = e.target.closest('[data-lesson]');
     if (lb) { openLesson(lb.dataset.lesson); return; }
+    var vb = e.target.closest('[data-video]');
+    if (vb) { openPlayer(vb.dataset.video); return; }
     var stepBtn = e.target.closest('[data-step]');
     if (stepBtn) {
       /* короткое «глухое» окно после автосмены карточки: второй тап по тому же
@@ -1906,6 +2663,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   viewBase.addEventListener('click', function (e) {
     var lb = e.target.closest('[data-lesson]');
     if (lb) { openLesson(lb.dataset.lesson); return; }
+    var vb = e.target.closest('[data-video]');
+    if (vb) { openPlayer(vb.dataset.video); return; }
+    var gb = e.target.closest('[data-game]');
+    if (gb) { openGame(gb.dataset.game); return; }
     var tb = e.target.closest('[data-term]');
     if (tb) {
       var wrap = tb.parentElement;
@@ -1915,14 +2676,37 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   });
 
   viewMe.addEventListener('click', function (e) {
+    if (e.target.closest('#remToggle')) {
+      if (state.reminder.on) {
+        state.reminder.on = false;
+        remHint = '';
+        saveState();
+        renderMe();
+      } else {
+        enableReminder();
+      }
+      return;
+    }
+    if (e.target.closest('#remCal')) {
+      downloadICS();
+      return;
+    }
     if (e.target.closest('#resetBtn')) {
       if (!confirm('Сбросить весь прогресс? Отменить это будет нельзя.')) return;
       if (pendingAdvance) { clearTimeout(pendingAdvance); pendingAdvance = null; }
       justCompleted = '';
-      state = { steps: {}, theory: {}, streak: { count: 0, last: '' }, activity: {}, focusTask: '' };
+      state = blankState();
       try { localStorage.removeItem(STORE_KEY); } catch (err) {}
       openStages = null;
       renderActive();
+    }
+  });
+
+  viewMe.addEventListener('change', function (e) {
+    if (e.target.id === 'remTime' && /^([01]\d|2[0-3]):[0-5]\d$/.test(e.target.value)) {
+      state.reminder.time = e.target.value;
+      saveState();
+      renderMe();
     }
   });
 
@@ -1930,7 +2714,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
     if (!celebrateEl.hidden) { hideCelebration(); return; }
-    if (!lessonEl.hidden) requestCloseLesson();
+    if (topOverlay()) requestCloseOverlay();
   });
 
   /* ---------- init ---------- */
@@ -1942,6 +2726,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     var stale = findTask(state.focusTask);
     if (!stale || taskDone(stale[0], stale[1])) { state.focusTask = ''; saveState(); }
   }
+  setInterval(checkReminder, 30000);
+  document.addEventListener('visibilitychange', checkReminder);
+  checkReminder();
   switchTab('now');
 })();
 </script>
