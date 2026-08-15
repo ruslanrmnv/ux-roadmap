@@ -1,0 +1,19 @@
+{
+  "name": "UX: от нуля до найма",
+  "short_name": "UX-роадмап",
+  "description": "Трекер пути в UX: одна задача в фокусе, карта этапов, уроки, тренажёры, видео и стрик.",
+  "lang": "ru",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F151E",
+  "theme_color": "#0F151E",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
