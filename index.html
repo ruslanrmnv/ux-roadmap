@@ -402,6 +402,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .player-note b{color:var(--text)}
 .player-ext{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;color:var(--accent);font-size:14px;font-weight:600;text-underline-offset:3px}
 .l-next.done-mark{background:var(--surface2);color:var(--good)}
+.video-box.video-fail{
+  aspect-ratio:auto;min-height:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding:26px 18px;text-align:center;
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+}
+.video-fail-msg{font-size:15.5px;line-height:1.5;font-weight:600}
+.video-fail-sub{font-size:13.5px;color:var(--muted)}
+a.video-fail-btn{display:inline-flex;align-items:center;justify-content:center;width:auto;min-height:48px;margin-top:0;padding:12px 22px;text-decoration:none}
 
 /* ---------- тренажёры ---------- */
 .fc-card{
@@ -937,9 +946,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   var VIDEOS = {
     'krug-demo': {
-      yt: 'QckIzHC99Xc', lang: 'en', mins: '24',
-      title: 'Rocket Surgery Made Easy: Usability Demo',
-      by: 'Steve Krug · Peachpit TV',
+      yt: '1UCDUOB_aS8', lang: 'en', mins: '8',
+      title: 'Usability Test Demo — Steve Krug',
+      by: 'авторское демо к Rocket Surgery Made Easy',
       note: 'Тот самый эталонный тест из задачи: смотри, как Круг молчит, что спрашивает и как не помогает. Нужны субтитры? В плеере: ⚙️ → Subtitles → Auto-translate → Russian.'
     },
     'figma-start': {
@@ -1032,7 +1041,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     {
       title: 'Этап 0 — Проверка «моё / не моё» (2–4 дня)',
       tasks: [
-        { m: W, t: 'Демо юзабилити-теста Стива Круга (24 мин)', lesson: 'ut-what', videos: ['krug-demo'],
+        { m: W, t: 'Демо юзабилити-теста Стива Круга (8 мин)', lesson: 'ut-what', videos: ['krug-demo'],
           links: [{ u: 'https://www.youtube.com/results?search_query=steve+krug+usability+test+demo', t: 'Ещё демо-тесты Круга (поиск)' }],
           steps: [
             'Нажми «Смотри здесь» выше и включи демо-тест Круга',
@@ -2327,9 +2336,58 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   function closePlayer() {
     if (playerEl.hidden) return;
     playerId = '';
+    try { if (ytWatcher && ytWatcher.destroy) ytWatcher.destroy(); } catch (e) {}
+    ytWatcher = null;
     playerBody.textContent = ''; /* убирает iframe — останавливает воспроизведение */
     closeOverlayNode(playerEl);
   }
+  /* --- обнаружение «видео недоступно» внутри embed (YouTube IFrame API) --- */
+  var ytApiRequested = false;
+  var ytWatcher = null;
+  function withYTApi(cb) {
+    if (window.YT && window.YT.Player) { cb(); return; }
+    var prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function () {
+      if (typeof prev === 'function') { try { prev(); } catch (e) {} }
+      cb();
+    };
+    if (ytApiRequested) return;
+    ytApiRequested = true;
+    var s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.async = true; /* не загрузится (офлайн, блокировщик) — плеер работает как раньше */
+    document.head.appendChild(s);
+  }
+  function attachEmbedWatch(frame, forId, box) {
+    withYTApi(function () {
+      if (playerId !== forId || !frame.isConnected) return;
+      try {
+        ytWatcher = new YT.Player(frame, {
+          events: {
+            onError: function (ev) {
+              if (playerId !== forId || !box.isConnected) return;
+              showEmbedFallback(box, forId, ev && ev.data);
+            }
+          }
+        });
+      } catch (e) {}
+    });
+  }
+  function showEmbedFallback(box, id, code) {
+    var V = VIDEOS[id];
+    if (!V) return;
+    box.textContent = '';
+    box.classList.add('video-fail');
+    box.appendChild(el('p', 'video-fail-msg', (code === 101 || code === 150)
+      ? 'Владелец разрешает смотреть это видео только на самом YouTube.'
+      : 'Видео не загрузилось: его могли скрыть, или мешает сеть/регион.'));
+    var go = el('a', 'l-next video-fail-btn', '▶ Смотреть на YouTube');
+    go.href = 'https://www.youtube.com/watch?v=' + V.yt;
+    go.target = '_blank'; go.rel = 'noopener noreferrer';
+    box.appendChild(go);
+    box.appendChild(el('p', 'video-fail-sub', 'Досмотришь — вернись и нажми «Засчитать просмотр».'));
+  }
+
   function renderPlayer() {
     var V = VIDEOS[playerId];
     if (!V) return;
@@ -2338,12 +2396,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
     var box = el('div', 'video-box');
     var frame = document.createElement('iframe');
-    frame.src = 'https://www.youtube-nocookie.com/embed/' + V.yt + '?rel=0';
+    var origin = location.origin && location.origin !== 'null' ? '&origin=' + encodeURIComponent(location.origin) : '';
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + V.yt + '?rel=0&enablejsapi=1' + origin;
     frame.title = V.title;
     frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
     frame.setAttribute('allowfullscreen', '');
     box.appendChild(frame);
     playerBody.appendChild(box);
+    attachEmbedWatch(frame, playerId, box);
 
     var h = el('h2', 'player-title', V.title);
     h.id = 'playerTitle';
