@@ -38,7 +38,8 @@ self.addEventListener('fetch', function (e) {
   if (url.origin !== self.location.origin) return; /* видео с YouTube и прочее — мимо кеша */
 
   e.respondWith(
-    fetch(req).then(function (res) {
+    /* навигации — мимо HTTP-кеша (Pages отдаёт max-age=600): деплой доезжает сразу */
+    fetch(req.mode === 'navigate' ? new Request(req.url, { cache: 'no-cache' }) : req).then(function (res) {
       if (res && res.ok) {
         var copy = res.clone();
         /* waitUntil — иначе браузер может погасить воркер до завершения записи */

@@ -258,7 +258,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   background:var(--surface);border:1px solid var(--border);border-radius:16px;
   margin-top:12px;padding:6px 8px 8px;
 }
-.base-group h3{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 8px 4px}
+.base-group h2{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 8px 4px}
 .lrow{
   display:flex;align-items:center;gap:11px;
   width:100%;min-height:52px;padding:10px 8px;
@@ -437,7 +437,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   background:var(--surface);border:1px solid var(--border);border-radius:16px;
   margin-top:12px;padding:16px;
 }
-.me-card h3{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.me-card h2{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .rem-row{display:flex;align-items:center;gap:12px;margin-top:12px}
 .rem-text{flex:1;min-width:0;font-size:14.5px;line-height:1.4}
 .rem-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
@@ -505,19 +505,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 <nav class="tabbar" aria-label="Разделы">
   <div class="tabbar-in" role="tablist">
-    <button class="tab" role="tab" data-tab="now" aria-selected="true">
+    <button class="tab" role="tab" id="tab-now" aria-controls="view-now" data-tab="now" aria-selected="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5"></circle></svg>
       Сейчас
     </button>
-    <button class="tab" role="tab" data-tab="map" aria-selected="false">
+    <button class="tab" role="tab" id="tab-map" aria-controls="view-map" data-tab="map" aria-selected="false" tabindex="-1">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"></path><path d="M9 4v14M15 6v14"></path></svg>
       Карта
     </button>
-    <button class="tab" role="tab" data-tab="base" aria-selected="false">
+    <button class="tab" role="tab" id="tab-base" aria-controls="view-base" data-tab="base" aria-selected="false" tabindex="-1">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h13"></path><path d="M9 7h6"></path></svg>
       База
     </button>
-    <button class="tab" role="tab" data-tab="me" aria-selected="false">
+    <button class="tab" role="tab" id="tab-me" aria-controls="view-me" data-tab="me" aria-selected="false" tabindex="-1">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"></path></svg>
       Я
     </button>
@@ -1579,6 +1579,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   function renderNow() {
     viewNow.textContent = '';
+    viewNow.appendChild(el('h1', 'sr-only', 'Сейчас — один следующий шаг'));
     var cur = justCompleted ? findTask(justCompleted) : null;
     if (!cur && state.focusTask) cur = findTask(state.focusTask);
     if (!cur) cur = naturalTask();
@@ -1692,7 +1693,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     head.appendChild(ringWrap);
     var headText = el('div', 'map-head-text');
     headText.appendChild(el('h1', '', 'UX: от нуля до найма'));
-    headText.appendChild(el('p', 'map-sub', 'Цель — роль junior product/UX-дизайнера с сильным ресёрчем. Кейсы решают, не сертификаты. Этап закрывается только 🛠-гейтом.'));
+    headText.appendChild(el('p', 'map-sub', 'Цель — роль junior product/UX-дизайнера с сильным ресёрчем. Кейсы решают, не сертификаты. Этап закрывается только 🛠-гейтом — финальной практической задачей этапа.'));
     head.appendChild(headText);
     viewMap.appendChild(head);
 
@@ -1750,7 +1751,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         row.appendChild(el('span', 'trow-dot'));
         var txt = el('span', 'trow-text');
         txt.appendChild(document.createTextNode((task.m === W ? '🎥 ' : '🛠 ')));
-        if (task.gate) txt.appendChild(el('span', 'trow-gate', 'Гейт'));
+        if (task.gate) {
+          txt.appendChild(el('span', 'trow-gate', 'Гейт'));
+          txt.appendChild(document.createTextNode(' · ')); /* иначе «Гейт 1 живой тест» читается слитно */
+        }
         txt.appendChild(document.createTextNode(taskTitleText(task)));
         row.appendChild(txt);
         body.appendChild(row);
@@ -1778,9 +1782,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     viewBase.appendChild(prog);
 
     var games = el('section', 'base-group');
-    games.appendChild(el('h3', '', 'Тренажёры'));
+    games.appendChild(el('h2', '', 'Тренажёры'));
     [
-      ['cards', '🃏', 'Карточки терминов', '10 случайных · знал / ещё раз'],
+      ['cards', '🃏', 'Карточки терминов', '10 случайных · помню / ещё раз'],
       ['pairs', '🧩', 'Пары', 'собери термин + определение'],
       ['sprint', '⚡', 'Спринт по урокам', '10 вопросов из всех уроков' + (state.games.sprintBest ? ' · рекорд ' + state.games.sprintBest + '/10' : '')],
       ['detective', '🕵️', 'Детектив по эвристикам', 'найди, какое правило нарушено']
@@ -1799,7 +1803,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
     BASE_GROUPS.forEach(function (g) {
       var box = el('section', 'base-group');
-      box.appendChild(el('h3', '', g.title));
+      box.appendChild(el('h2', '', g.title));
       g.ids.forEach(function (id) {
         var L = LESSONS[id];
         if (!L) return;
@@ -1820,7 +1824,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
     if (VIDEO_ORDER.length) {
       var vids = el('section', 'base-group');
-      vids.appendChild(el('h3', '', 'Видеотека'));
+      vids.appendChild(el('h2', '', 'Видеотека'));
       VIDEO_ORDER.forEach(function (id) {
         var V = VIDEOS[id];
         if (!V) return;
@@ -1840,7 +1844,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     }
 
     var gl = el('section', 'base-group');
-    gl.appendChild(el('h3', '', 'Словарь'));
+    gl.appendChild(el('h2', '', 'Словарь'));
     GLOSSARY.forEach(function (term, i) {
       var wrap = el('div', 'term');
       var b = el('button', 'term-btn');
@@ -1876,7 +1880,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   function installCard() {
     var card = el('section', 'me-card');
     card.id = 'installCard';
-    card.appendChild(el('h3', '', '📱 Приложение'));
+    card.appendChild(el('h2', '', '📱 Приложение'));
     if (isStandalone()) {
       card.appendChild(el('p', 'rem-note', 'Установлено ✓ Запускается с иконки и работает без интернета (кроме видео). Прогресс хранится на этом устройстве.'));
       return card;
@@ -1925,7 +1929,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   function reminderCard() {
     var card = el('section', 'me-card');
-    card.appendChild(el('h3', '', 'Напоминание о стрике'));
+    card.appendChild(el('h2', '', 'Напоминание о стрике'));
 
     if (notifySupported()) {
       var row = el('div', 'rem-row');
@@ -1935,11 +1939,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         ? 'Включено. Сработает, пока вкладка с сайтом открыта — можно в фоне.'
         : 'Пуш в браузере в выбранное время.'));
       row.appendChild(txt);
-      var toggle = el('button', 'rem-btn' + (state.reminder.on ? ' on' : ''), state.reminder.on ? 'Вкл' : 'Выкл');
+      /* подпись — действием, а не состоянием: «Выкл» читается двусмысленно */
+      var toggle = el('button', 'rem-btn' + (state.reminder.on ? ' on' : ''), state.reminder.on ? 'Выключить' : 'Включить');
       toggle.type = 'button';
       toggle.id = 'remToggle';
-      toggle.setAttribute('aria-pressed', state.reminder.on ? 'true' : 'false');
-      toggle.setAttribute('aria-label', 'Напоминание в браузере');
       row.appendChild(toggle);
       card.appendChild(row);
 
@@ -2038,6 +2041,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           fireReminderNotification('Напоминания включены', 'Так будет выглядеть ежедневное напоминание в ' + state.reminder.time + '.');
           state.reminder.on = true;
           remHint = '';
+          /* если выбранное время сегодня уже прошло, тестовое уведомление считается
+             сегодняшним — иначе через полминуты придёт второе, «боевое» */
+          var hmNow = new Date();
+          var hm = String(hmNow.getHours()).padStart(2, '0') + ':' + String(hmNow.getMinutes()).padStart(2, '0');
+          if (hm >= state.reminder.time) state.reminder.fired = todayKey();
         } catch (e) {
           state.reminder.on = false;
           remHint = 'Этот браузер не даёт сайту показывать такие уведомления. Надёжнее вариант с календарём ниже.';
@@ -2055,6 +2063,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   function renderMe() {
     viewMe.textContent = '';
+    viewMe.appendChild(el('h1', 'sr-only', 'Я — прогресс и настройки'));
     var t = totals();
     var streak = currentStreak();
 
@@ -2119,7 +2128,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     viewBase.hidden = name !== 'base';
     viewMe.hidden = name !== 'me';
     document.querySelectorAll('.tab').forEach(function (b) {
-      b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false');
+      var sel = b.dataset.tab === name;
+      b.setAttribute('aria-selected', sel ? 'true' : 'false');
+      b.tabIndex = sel ? 0 : -1; /* roving tabindex: один tab-stop на весь таббар */
     });
     renderActive();
     window.scrollTo(0, 0);
@@ -2341,7 +2352,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     if (V.note) playerBody.appendChild(el('p', 'player-note', V.note));
 
     var seen = !!state.videos[playerId];
-    var done = el('button', 'l-next' + (seen ? ' done-mark' : ''), seen ? '✓ Засчитано' : '✓ Досмотрел — засчитать');
+    var done = el('button', 'l-next' + (seen ? ' done-mark' : ''), seen ? '✓ Засчитано' : '✓ Засчитать просмотр');
     done.type = 'button';
     done.id = 'playerDoneBtn';
     done.disabled = seen;
@@ -2490,7 +2501,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         no.type = 'button';
         no.dataset.gameAgain = '1';
         row.appendChild(no);
-        var yes = el('button', 'l-next', '👍 Знал');
+        var yes = el('button', 'l-next', '👍 Помню');
         yes.type = 'button';
         yes.dataset.gameKnew = '1';
         row.appendChild(yes);
@@ -2664,6 +2675,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   document.querySelector('.tabbar').addEventListener('click', function (e) {
     var b = e.target.closest('.tab');
     if (b) switchTab(b.dataset.tab);
+  });
+  /* клавиатурный паттерн вкладок (APG): стрелки/Home/End двигают и активируют */
+  document.querySelector('.tabbar-in').addEventListener('keydown', function (e) {
+    if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(e.key) === -1) return;
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+    var i = tabs.indexOf(document.activeElement);
+    if (i === -1) return;
+    e.preventDefault();
+    var j = e.key === 'Home' ? 0
+      : e.key === 'End' ? tabs.length - 1
+      : (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+    switchTab(tabs[j].dataset.tab);
+    tabs[j].focus();
   });
 
   viewNow.addEventListener('click', function (e) {
