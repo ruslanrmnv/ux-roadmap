@@ -41,11 +41,14 @@ self.addEventListener('fetch', function (e) {
     fetch(req).then(function (res) {
       if (res && res.ok) {
         var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        /* waitUntil — иначе браузер может погасить воркер до завершения записи */
+        e.waitUntil(caches.open(CACHE).then(function (c) { return c.put(req, copy); }));
       }
       return res;
     }).catch(function () {
-      return caches.match(req).then(function (hit) {
+      /* ignoreSearch: офлайн-открытие ссылки с ?query должно получить ту же
+         свежую копию приложения, что и открытие без параметров */
+      return caches.match(req, { ignoreSearch: true }).then(function (hit) {
         if (hit) return hit;
         if (req.mode === 'navigate') return caches.match('./index.html');
         return Response.error();
